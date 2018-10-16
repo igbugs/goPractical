@@ -1,0 +1,1 @@
+{"1":{"Id":1,"Name":"user01","Grade":"class01","Sex":"F","CardId":"11010100110","BorrowBook":["(2)book02"]},"2":{"Id":2,"Name":"user02","Grade":"class02","Sex":"M","CardId":"20020202020","BorrowBook":["(3)book03"]},"3":{"Id":3,"Name":"user03","Grade":"class02","Sex":"F","CardId":"1111111111111111","BorrowBook":null}}

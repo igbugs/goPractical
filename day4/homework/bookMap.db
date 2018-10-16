@@ -1,0 +1,1 @@
+{"1":{"Id":1,"Name":"book01","Number":9,"Author":"xyb","PubDate":"21011101","BorrowStudent":["(1)user01"]},"2":{"Id":2,"Name":"book02","Number":12,"Author":"xyb1","PubDate":"12001010","BorrowStudent":null},"3":{"Id":3,"Name":"book03","Number":2,"Author":"xyb","PubDate":"21011101","BorrowStudent":["(2)user02"]}}
