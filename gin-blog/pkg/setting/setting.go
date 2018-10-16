@@ -2,8 +2,8 @@ package setting
 
 import (
 	"time"
-	"log"
 	"github.com/go-ini/ini"
+	"gin-blog/pkg/logging"
 )
 
 var (
@@ -26,7 +26,7 @@ func LoadBase()  {
 func LoadApp()  {
 	sec, err := Cfg.GetSection("app")
 	if err != nil {
-		log.Fatal("Fail to get section 'app': %v", err)
+		logging.Fatal("Fail to get section 'app': %v", err)
 	}
 	PageSize = sec.Key("page_size").MustInt(10)
 	JwtSecret = sec.Key("jwt_secret").MustString("!@#$%^&*)(*&")
@@ -35,7 +35,7 @@ func LoadApp()  {
 func LoadServer()  {
 	sec, err := Cfg.GetSection("server")
 	if err != nil {
-		log.Fatal("Fail to get sectioin 'server': %v", err)
+		logging.Fatal("Fail to get sectioin 'server': %v", err)
 	}
 
 	RunMode = Cfg.Section("").Key("run_mode").MustString("debug")
@@ -50,7 +50,7 @@ func init()  {
 	var err error
 	Cfg, err = ini.Load("conf/app.ini")
 	if err != nil {
-		log.Fatal("Fail to parse 'conf/app.ini': %v", err)
+		logging.Fatal("Fail to parse 'conf/app.ini': %v", err)
 	}
 
 	LoadBase()

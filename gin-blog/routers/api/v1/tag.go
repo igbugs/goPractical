@@ -9,7 +9,7 @@ import (
 	"gin-blog/pkg/setting"
 	"net/http"
 	"github.com/astaxie/beego/validation"
-	"github.com/astaxie/beego/logs"
+	"gin-blog/pkg/logging"
 )
 
 // 获取多个文章的标签
@@ -67,7 +67,7 @@ func AddTag(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			logs.Info(err.Key, err.Message)
+			logging.Info(err.Key, err.Message)
 		}
 	}
 
@@ -119,7 +119,7 @@ func EditTag(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			logs.Info(err.Key, err.Message)
+			logging.Info(err.Key, err.Message)
 		}
 	}
 
@@ -148,7 +148,7 @@ func DeleteTag(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			logs.Info(err.Key, err.Message)
+			logging.Info(err.Key, err.Message)
 		}
 	}
 

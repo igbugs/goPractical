@@ -6,9 +6,9 @@ import (
 	"gin-blog/pkg/e"
 	"gin-blog/models"
 	"gin-blog/pkg/util"
-	"github.com/astaxie/beego/logs"
 	"net/http"
 	"fmt"
+	"gin-blog/pkg/logging"
 )
 
 type auth struct {
@@ -43,7 +43,7 @@ func GetAuth(c *gin.Context) {
 		}
 	} else {
 		for _, err := range valid.Errors {
-			logs.Info(err.Key, err.Message)
+			logging.Info(err.Key, err.Message)
 		}
 	}
 
