@@ -36,7 +36,7 @@ func openLogFile(filePath string) *os.File {
 
 	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE| os.O_WRONLY, 0644)
 	if err != nil {
-		log.Fatalf("Fail to OpenFile: %v", err)
+		log.Fatalf("Fail to OpenFile: %v, %s", err)
 	}
 
 	return file
@@ -44,7 +44,8 @@ func openLogFile(filePath string) *os.File {
 
 func mkDir()  {
 	dir, _ := os.Getwd()
-	err := os.MkdirAll(dir + "/" + getLogFilePath(), os.ModePerm)
+	path := dir + "/" + getLogFilePath()
+	err := os.MkdirAll(path, os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
