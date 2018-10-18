@@ -10,16 +10,22 @@ import (
 	"os/signal"
 	"golang.org/x/net/context"
 	"time"
+	"gin-blog/models"
+	"gin-blog/pkg/logging"
 )
 
 func main() {
+	setting.Setup()
+	models.Setup()
+	logging.Setup()
+
 	router := routers.InitRouter()
 
 	s := &http.Server{
-		Addr: fmt.Sprintf(":%d", setting.HttpPort),
+		Addr: fmt.Sprintf(":%d", setting.ServerSetting.HttpPort),
 		Handler: router,
-		ReadTimeout: setting.ReadTimeout,
-		WriteTimeout: setting.WriteTimeout,
+		ReadTimeout: setting.ServerSetting.ReadTimeout,
+		WriteTimeout: setting.ServerSetting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
 

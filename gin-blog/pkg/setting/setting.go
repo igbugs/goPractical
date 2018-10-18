@@ -3,57 +3,83 @@ package setting
 import (
 	"time"
 	"github.com/go-ini/ini"
-	"gin-blog/pkg/logging"
+		"log"
 )
 
-var (
-	Cfg *ini.File
+//var (
+//	Cfg *ini.File
+//
+//	RunMode string
+//
+//	HttpPort int
+//	ReadTimeout time.Duration
+//	WriteTimeout time.Duration
+//
+//	PageSize int
+//	JwtSecret string
+//)
 
+type App struct {
+	JwtSecret string
+	PageSize int
+	RuntimeRootPath string
+
+	ImagePrefixUrl string
+	ImageSavePath string
+	ImageMaxSize int
+	ImageAllowExts []string
+
+	LogSavePath string
+	LogSaveName string
+	LogFileExt string
+	TimeFormat string
+}
+
+var AppSetting = &App{}
+
+type Server struct {
 	RunMode string
-
 	HttpPort int
 	ReadTimeout time.Duration
 	WriteTimeout time.Duration
-
-	PageSize int
-	JwtSecret string
-)
-
-func LoadBase()  {
-	RunMode = Cfg.Section("").Key("run_mode").MustString("debug")
 }
 
-func LoadApp()  {
-	sec, err := Cfg.GetSection("app")
-	if err != nil {
-		logging.Fatal("Fail to get section 'app': %v", err)
-	}
-	PageSize = sec.Key("page_size").MustInt(10)
-	JwtSecret = sec.Key("jwt_secret").MustString("!@#$%^&*)(*&")
+var ServerSetting = &Server{}
+
+type Database struct {
+	Type string
+	User string
+	Password string
+	Host string
+	Name string
+	TablePrefix string
 }
 
-func LoadServer()  {
-	sec, err := Cfg.GetSection("server")
+var DatabaseSetting = &Database{}
+
+func Setup()  {
+	Cfg, err := ini.Load("conf/app.ini")
 	if err != nil {
-		logging.Fatal("Fail to get sectioin 'server': %v", err)
+		log.Fatalf("Fail to parse 'conf/app.ini'; %v", err)
 	}
 
-	RunMode = Cfg.Section("").Key("run_mode").MustString("debug")
-
-	HttpPort = sec.Key("http_port").MustInt(8000)
-
-	ReadTimeout = time.Duration(sec.Key("read_timeout").MustInt(60)) * time.Second
-	WriteTimeout = time.Duration(sec.Key("write_timeout").MustInt(60)) * time.Second
-}
-
-func init()  {
-	var err error
-	Cfg, err = ini.Load("conf/app.ini")
+	err = Cfg.Section("app").MapTo(AppSetting)
 	if err != nil {
-		logging.Fatal("Fail to parse 'conf/app.ini': %v", err)
+		log.Fatalf("Cfg.MapTo AppSetting err: %v", err)
 	}
 
-	LoadBase()
-	LoadServer()
-	LoadApp()
+	AppSetting.ImageMaxSize = AppSetting.ImageMaxSize * 1024 * 1024
+
+	err = Cfg.Section("server").MapTo(ServerSetting)
+	if err != nil {
+		log.Fatalf("Cfg.MapTo ServerSetting err: %v", err)
+	}
+
+	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
+	ServerSetting.WriteTimeout = ServerSetting.WriteTimeout * time.Second
+
+	err = Cfg.Section("database").MapTo(DatabaseSetting)
+	if err != nil {
+		log.Fatalf("Cfg.MapTo DatabaseSetting err: %v", err)
+	}
 }

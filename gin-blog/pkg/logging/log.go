@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"fmt"
 	"path/filepath"
+	"gin-blog/pkg/file"
 )
 
 type Level int
@@ -29,11 +30,15 @@ const (
 	FATAL
 )
 
-func init() {
-	filePath := getLogFileFullPath()
-	F = openLogFile(filePath)
+func Setup() {
+	filePath := getLogFilePath()
+	fileName := getLogFileName()
+	F, err := file.MustOpen(fileName, filePath)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-	logger = log.New(F, DefaultPrefix, log.Lshortfile)
+	logger = log.New(F, DefaultPrefix, log.LstdFlags)
 }
 
 func Debug(v ...interface{}) {
