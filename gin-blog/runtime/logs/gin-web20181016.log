@@ -1,2 +1,0 @@
-[INFO][article.go:75]log.go:46: [state 状态只允许0或1]
-[INFO][article.go:75]log.go:46: [tag_id 标签ID必须大于0]
