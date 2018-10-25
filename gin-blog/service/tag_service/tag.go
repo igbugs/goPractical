@@ -3,10 +3,16 @@ package tag_service
 import (
 	"gin-blog/models"
 	"gin-blog/service/cache_service"
-		"gin-blog/pkg/gredis"
+	"gin-blog/pkg/gredis"
 	"gin-blog/pkg/logging"
 	"encoding/json"
-)
+	"github.com/tealeg/xlsx"
+	"strconv"
+	"time"
+	"gin-blog/pkg/export"
+	"io"
+	"github.com/360EntSecGroup-Skylar/excelize"
+		)
 
 type Tag struct {
 	ID int
@@ -92,4 +98,80 @@ func (t *Tag) getMaps() map[string]interface{} {
 	}
 
 	return maps
+}
+
+func (t *Tag) Export() (string, error) {
+	tags, err := t.GetAll()
+	if err != nil {
+		return "", err
+	}
+
+	xlsxFile := xlsx.NewFile()
+	sheet, err := xlsxFile.AddSheet("标签信息")
+	if err != nil {
+		return "", err
+	}
+
+	titles := []string{"ID", "名称", "创建人", "创建时间", "修改人", "修改时间"}
+	row := sheet.AddRow()
+
+	var cell *xlsx.Cell
+	for _, title := range titles {
+		cell = row.AddCell()
+		cell.Value = title
+	}
+
+	for _, v := range tags {
+		values := []string{
+			strconv.Itoa(v.ID),
+			v.Name,
+			v.CreatedBy,
+			strconv.Itoa(v.CreatedOn),
+			v.ModifiedBy,
+			strconv.Itoa(v.ModifiedOn),
+		}
+
+		row = sheet.AddRow()
+		for _, value := range values {
+			cell = row.AddCell()
+			cell.Value = value
+		}
+	}
+
+	times := strconv.Itoa(int(time.Now().Unix()))
+	filename := "tags-" + times + ".xlsx"
+
+	fullPath := export.GetExcelFullPath() + filename
+	err = export.CheckExcel(export.GetExcelFullPath())
+	if err != nil {
+		logging.Error("open xlsx file failed, err: %v", err)
+	}
+
+	err = xlsxFile.Save(fullPath)
+	if err != nil {
+		return "", err
+	}
+
+	return filename, nil
+}
+
+func (t *Tag) Import(r io.Reader) error {
+	xls, err := excelize.OpenReader(r)
+	if err != nil {
+		return err
+	}
+
+	rows := xls.GetRows("便签信息")
+	for irow, row := range rows {
+		if irow > 0 {
+			var data []string
+			for _, cell := range row {
+				data = append(data, cell)
+			}
+
+			models.AddTag(data[1], 1, data[2])
+		}
+	}
+
+	return nil
 }

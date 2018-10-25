@@ -3,7 +3,7 @@ package gredis
 import (
 	"github.com/garyburd/redigo/redis"
 	"gin-blog/pkg/setting"
-			"time"
+	"time"
 	"github.com/gin-gonic/gin/json"
 		)
 

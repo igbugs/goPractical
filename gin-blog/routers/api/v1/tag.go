@@ -10,7 +10,9 @@ import (
 	"github.com/astaxie/beego/validation"
 		"gin-blog/pkg/app"
 	"gin-blog/service/tag_service"
-	)
+	"gin-blog/pkg/export"
+	"gin-blog/pkg/logging"
+)
 
 // 获取多个文章的标签
 func GetTags(c *gin.Context) {
@@ -185,6 +187,67 @@ func DeleteTag(c *gin.Context) {
 	err = tagService.Delete()
 	if err != nil {
 		appG.Response(http.StatusOK, e.ERROR_DELETE_TAG_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
+}
+
+func ExportTag(c *gin.Context) {
+	appG := app.Gin{c}
+	valid := validation.Validation{}
+
+	name := c.PostForm("name")
+	state := -1
+	if arg := c.PostForm("state"); arg != "" {
+		state = com.StrTo(arg).MustInt()
+	}
+
+	valid.Required(name, "name").Message("tag名称不能为空")
+	valid.MaxSize(name, 100, "name").Message("名字最长为100字符")
+
+	data := map[string]interface{}{
+		"name": name,
+		"state": state,
+	}
+	if valid.HasErrors() {
+		app.MarkErrors(valid.Errors)
+		appG.Response(http.StatusOK, e.INVAILD_PARAMS, data)
+		return
+	}
+
+	tagService := tag_service.Tag{
+		Name: name,
+		State: state,
+	}
+
+	filename, err := tagService.Export()
+	if err != nil {
+		data["err"] = err
+		appG.Response(http.StatusOK, e.ERROR_EXPORT_TAG_FAIL, data)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]interface{}{
+		"export_url": export.GetExcelFullUrl(filename),
+		"export_save_url": export.GetExcelFullPath() + filename,
+	})
+}
+
+func ImportTag(c *gin.Context) {
+	appG := app.Gin{c}
+	f, _, err := c.Request.FormFile("file")
+	if err != nil {
+		logging.Warn(err)
+		appG.Response(http.StatusOK, e.ERROR, nil)
+		return
+	}
+
+	tagService := tag_service.Tag{}
+	err = tagService.Import(f)
+	if err != nil {
+		logging.Warn(err)
+		appG.Response(http.StatusOK, e.ERROR_IMPORT_TAG_FAIL, nil)
 		return
 	}
 

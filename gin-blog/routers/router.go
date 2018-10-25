@@ -10,6 +10,7 @@ import (
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"net/http"
 	"gin-blog/pkg/upload"
+	"gin-blog/pkg/export"
 )
 
 func InitRouter() *gin.Engine {
@@ -21,6 +22,7 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(setting.ServerSetting.RunMode)
 
 	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
+	r.StaticFS("/export", http.Dir(export.GetExcelFullPath()))
 
 	r.GET("/auth", api.GetAuth)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -38,6 +40,10 @@ func InitRouter() *gin.Engine {
 		apiv1.PUT("/tags/:id", v1.EditTag)
 		// 删除标签列表
 		apiv1.DELETE("/tags/:id", v1.DeleteTag)
+		// 导出标签
+		r.POST("/tags/export", v1.ExportTag)
+		// 导入标签
+		r.POST("tags/import", v1.ImportTag)
 
 		// 获取多个文章列表
 		apiv1.GET("/articles", v1.GetArticles)

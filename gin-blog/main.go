@@ -12,11 +12,13 @@ import (
 	"time"
 	"gin-blog/models"
 	"gin-blog/pkg/logging"
+	"gin-blog/pkg/gredis"
 )
 
 func main() {
 	setting.Setup()
 	models.Setup()
+	gredis.Setup()
 	logging.Setup()
 
 	router := routers.InitRouter()
