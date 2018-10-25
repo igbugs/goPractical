@@ -1,28 +1,74 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"golang.org/x/sync/errgroup"
 )
 
-func main() {
-	router := gin.Default()
-	router.GET("/someDataFromReader", func(c *gin.Context) {
-		response, err := http.Get("https://raw.githubusercontent.com/gin-gonic/logo/master/color.png")
-		if err != nil || response.StatusCode != http.StatusOK {
-			c.Status(http.StatusServiceUnavailable)
-			return
-		}
+var (
+	g errgroup.Group
+)
 
-		reader := response.Body
-		contentLength := response.ContentLength
-		contentType := response.Header.Get("Content-Type")
-
-		extraHeaders := map[string]string{
-			"Content-Disposition": `attachment; filename="gopher.png"`,
-		}
-
-		c.DataFromReader(http.StatusOK, contentLength, contentType, reader, extraHeaders)
+func router01() http.Handler {
+	e := gin.New()
+	e.Use(gin.Recovery())
+	e.GET("/", func(c *gin.Context) {
+		c.JSON(
+			http.StatusOK,
+			gin.H{
+				"code":  http.StatusOK,
+				"error": "Welcome server 01",
+			},
+		)
 	})
-	router.Run(":8080")
+
+	return e
+}
+
+func router02() http.Handler {
+	e := gin.New()
+	e.Use(gin.Recovery())
+	e.GET("/", func(c *gin.Context) {
+		c.JSON(
+			http.StatusOK,
+			gin.H{
+				"code":  http.StatusOK,
+				"error": "Welcome server 02",
+			},
+		)
+	})
+
+	return e
+}
+
+func main() {
+	server01 := &http.Server{
+		Addr:         ":8080",
+		Handler:      router01(),
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
+	server02 := &http.Server{
+		Addr:         ":8081",
+		Handler:      router02(),
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
+	g.Go(func() error {
+		return server01.ListenAndServe()
+	})
+
+	g.Go(func() error {
+		return server02.ListenAndServe()
+	})
+
+	if err := g.Wait(); err != nil {
+		log.Fatal(err)
+	}
 }

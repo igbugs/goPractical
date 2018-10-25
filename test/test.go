@@ -1,52 +1,27 @@
 package main
 
 import (
-	"fmt"
-	"time"
-	"strings"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
-type TestFunc func(s string) string
-
-func (t TestFunc) doSome(s string) string {
-	return fmt.Sprintf("doSomeThing(return string) called: %s\n", t(s))
-}
-
-type TestFunc1 func(s string) TestFunc1
-
-func (t TestFunc1) doSome(s string) string {
-	return fmt.Sprintf("doSomeThing(return func) called: %s\n", t(s))
-}
-
-func add1(r rune) rune { return r +1 }
-
 func main() {
-	var f TestFunc = func(s string) string {
-		return fmt.Sprintf("TestFunc called: %s\n\n", s)
-	}
-	a := f("a: call TestFunc .......")
-	b := f.doSome("b: call TestFunc.doSome ......")
-	fmt.Println(a)
-	fmt.Println(b)
+	router := gin.Default()
 
-	var f1 TestFunc1 = func(s string) TestFunc1 {
-		return func(s string) TestFunc1 {
-			fmt.Println(s)
-			return nil
-		}
-	}
-	f1("a1: call TestFunc .......").doSome("call TestFunc.doSome ......")
-	b1 := f1.doSome("b1: call TestFunc.doSome ......")
-	//fmt.Println(a1)
-	fmt.Println(b1)
+	// 这个处理器将去匹配 /user/john ， 但是它不会去匹配 /user
+	router.GET("/user/:name", func(c *gin.Context) {
+		name := c.Param("name")
+		c.String(http.StatusOK, "Hello %s", name)
+	})
 
-	const timeout = 1 * time.Minute
-	deadline := time.Now().Add(timeout)
-	fmt.Println(deadline)
+	// 然而，这个将会匹配 /user/john 并且也会匹配 /user/john/send
+	// 如果没有其他的路由匹配 /user/john ， 它将重定向到 /user/john/
+	router.GET("/user/:name/*action", func(c *gin.Context) {
+		name := c.Param("name")
+		action := c.Param("action")
+		message := name + " is " + action
+		c.String(http.StatusOK, message)
+	})
 
-
-	fmt.Println(strings.Map(add1, "HAL-9000")) // "IBM.:111"
-	fmt.Println(strings.Map(add1, "VMS"))      // "WNT"
-	fmt.Println(strings.Map(add1, "Admix"))    // "Benjy"
-
+	router.Run(":8080")
 }
