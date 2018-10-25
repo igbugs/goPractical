@@ -11,6 +11,9 @@ import (
 	"gin-blog/pkg/app"
 	"gin-blog/service/article_service"
 	"gin-blog/service/tag_service"
+	"gin-blog/pkg/qrcode"
+	"github.com/boombuler/barcode/qr"
+		"io"
 )
 
 // 获取单个文章
@@ -231,7 +234,7 @@ func EditArticle(c *gin.Context) {
 }
 
 // 删除文章
-func DeleteArticle(c *gin.Context)  {
+func DeleteArticle(c *gin.Context) {
 	appG := app.Gin{c}
 	valid := validation.Validation{}
 
@@ -262,4 +265,39 @@ func DeleteArticle(c *gin.Context)  {
 	}
 
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
+}
+
+const (
+	QRCODE_URL = "https://github.com/igbugs/goPractical"
+)
+func GenerateArticlePoster(c *gin.Context) {
+	appG := app.Gin{c}
+	qrc := qrcode.NewQrcode(QRCODE_URL, 300, 300, qr.M, qr.Auto)
+	article := &article_service.Article{}
+	posterName := article_service.GetPosterFlag() + "-" + qrcode.GetQrcodeFileName(qrc.Url) + qrc.GetQrcodeExt()
+	articlePoster := article_service.NewArticlePoster(posterName, article, qrc)
+	articlePosterBg := article_service.NewArticlePosterBg(
+		"bg.jpg",
+		articlePoster,
+		&article_service.Rect{
+			X0: 0,
+			Y0: 0,
+			X1: 550,
+			Y1: 700,
+		},
+		&article_service.Pt{
+			X: 125,
+			Y: 298,
+		})
+
+	_, filePath, err := articlePosterBg.Generate()
+	if err != nil && err != io.EOF {
+		appG.Response(http.StatusOK, e.ERROR_GEN_ARTICLE_POSTER_FAIL, map[string]interface{}{"err": err})
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
+		"poster_url": qrcode.GetQrcodeFullUrl(posterName),
+		"poster_save_url": filePath + posterName,
+	})
 }
