@@ -7,7 +7,10 @@ import (
 	"image/jpeg"
 	"image"
 	"image/draw"
-		"gin-blog/pkg/logging"
+	"gin-blog/pkg/logging"
+	"gin-blog/pkg/setting"
+	"io/ioutil"
+	"github.com/golang/freetype"
 )
 
 type ArticlePoster struct {
@@ -78,40 +81,41 @@ func (a *ArticlePosterBg) Generate() (string, string, error) {
 	fullPath := qrcode.GetQrcodeFullPath()
 	fileName, path, err := a.Qr.Encode(fullPath)
 	if err != nil {
+		logging.Warn("Qr Encode failed, err:", err)
 		return "", "", err
 	}
 
 	if !a.CheckMergedImage(path) {
 		mergedF, err := a.OpenMergedImage(path)
 		if err != nil {
-			logging.Warn("mergedF open failed, err: %v", err)
+			logging.Warn("mergedF open failed, err:", err)
 			return "", "", err
 		}
 		defer mergedF.Close()
 
 		bgF, err := file.MustOpen(a.Name, path)
 		if err != nil {
-			logging.Warn("bgF open failed, err: %v", err)
+			logging.Warn("bgF open failed, err:", err)
 			return "", "", err
 		}
 		defer bgF.Close()
 
 		qrF, err := file.MustOpen(fileName, path)
 		if err != nil {
-			logging.Warn("qrF open failed, err: %v", err)
+			logging.Warn("qrF open failed, err:", err)
 			return "", "", err
 		}
 		defer qrF.Close()
 
 		bgImage, err := jpeg.Decode(bgF)
 		if err != nil {
-			logging.Warn("bgImage Decode failed, err", err)
+			logging.Warn("bgImage Decode failed, err:", err)
 			return "", "", err
 		}
 
 		qrImage, err := jpeg.Decode(qrF)
 		if err != nil {
-			logging.Warn("qrImage Decode failed, err: %v", err)
+			logging.Warn("qrImage Decode failed, err:", err)
 			return "", "", err
 		}
 
@@ -120,7 +124,87 @@ func (a *ArticlePosterBg) Generate() (string, string, error) {
 		draw.Draw(jpg, jpg.Bounds(), bgImage, bgImage.Bounds().Min, draw.Over)
 		draw.Draw(jpg, jpg.Bounds(), qrImage, qrImage.Bounds().Min.Sub(image.Pt(a.Pt.X, a.Pt.Y)), draw.Over)
 
-		jpeg.Encode(mergedF, jpg, nil)
+		//jpeg.Encode(mergedF, jpg, nil)
+
+		err = a.DrawPoster(&DrawText{
+			JPG: jpg,
+			Merged: mergedF,
+
+			Title: "Golang gin study",
+			X0: 80,
+			Y0: 100,
+			Size0: 42,
+
+			SubTitle: "---igbugs",
+			X1: 320,
+			Y1: 220,
+			Size1: 36,
+		}, "msyhbd.ttc")
+
+		if err != nil {
+			logging.Error("DrawText for bg failed, err:", err)
+			return "", "", err
+		}
 	}
 	return fileName, path, nil
+}
+
+type DrawText struct {
+	JPG draw.Image
+	Merged *os.File
+
+	Title string
+	X0 int
+	Y0 int
+	Size0 float64
+
+	SubTitle string
+	X1 int
+	Y1 int
+	Size1 float64
+}
+
+func (a *ArticlePosterBg) DrawPoster(d *DrawText, fontName string) error {
+	fontSource := setting.AppSetting.RuntimeRootPath + setting.AppSetting.FontSavePath + fontName
+	fontSourceBytes, err := ioutil.ReadFile(fontSource)
+	if err != nil {
+		logging.Warn("open font failed, err:", err)
+		return err
+	}
+
+	trueTypeFont, err := freetype.ParseFont(fontSourceBytes)
+	if err != nil {
+		logging.Info("ParseFont to trueTypeFont failed, err:", err)
+		return err
+	}
+
+	fc := freetype.NewContext()
+	fc.SetDPI(72)
+	fc.SetFont(trueTypeFont)
+	fc.SetFontSize(d.Size0)
+	fc.SetClip(d.JPG.Bounds())
+	fc.SetDst(d.JPG)
+	fc.SetSrc(image.Black)
+
+	pt := freetype.Pt(d.X0, d.Y0)
+	_, err = fc.DrawString(d.Title, pt)
+	if err != nil {
+		logging.Warn("DrawString Titile failed, err:", err)
+		return err
+	}
+
+	pt = freetype.Pt(d.X1, d.Y1)
+	_, err = fc.DrawString(d.SubTitle, pt)
+	if err != nil {
+		logging.Warn("DrawString SubTitle failed, err:", err)
+		return err
+	}
+
+	err = jpeg.Encode(d.Merged, d.JPG, nil)
+	if err != nil {
+		logging.Error("jpeg.Encode to file failed, err:", err)
+		return err
+	}
+
+	return nil
 }
