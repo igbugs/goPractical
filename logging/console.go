@@ -1,4 +1,4 @@
-package loglib
+package logging
 
 import "os"
 
@@ -27,27 +27,27 @@ func (c *Console) Init() error {
 	return nil
 }
 
-func (c *Console) LogDebug(format string, args ...interface{}) {
+func (c *Console) Debug(format string, args ...interface{}) {
 	c.outLog(LogLevelDebug, os.Stdout, format, args...)
 }
 
-func (c *Console) LogTrace(format string, args ...interface{}) {
+func (c *Console) Trace(format string, args ...interface{}) {
 	c.outLog(LogLevelTrace, os.Stdout, format, args...)
 }
 
-func (c *Console) LogInfo(format string, args ...interface{}) {
+func (c *Console) Info(format string, args ...interface{}) {
 	c.outLog(LogLevelInfo, os.Stdout, format, args...)
 }
 
-func (c *Console) LogWarn(format string, args ...interface{}) {
+func (c *Console) Warn(format string, args ...interface{}) {
 	c.outLog(LogLevelWarn, os.Stdout, format, args...)
 }
 
-func (c *Console) LogError(format string, args ...interface{}) {
+func (c *Console) Error(format string, args ...interface{}) {
 	c.outLog(LogLevelError, os.Stdout, format, args...)
 }
 
-func (c *Console) LogFatal(format string, args ...interface{}) {
+func (c *Console) Fatal(format string, args ...interface{}) {
 	c.outLog(LogLevelFatal, os.Stdout, format, args...)
 }
 

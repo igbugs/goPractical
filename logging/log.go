@@ -1,4 +1,4 @@
-package loglib
+package logging
 
 const (
 	LogTypeConsole = iota
@@ -21,12 +21,12 @@ var logger Logger = newLogger(LogTypeConsole, LogLevelDebug, "", "default")
 type Logger interface {
 	Init() error
 
-	LogDebug(format string, args ...interface{})
-	LogTrace(format string, args ...interface{})
-	LogInfo(format string, args ...interface{})
-	LogWarn(format string, args ...interface{})
-	LogError(format string, args ...interface{})
-	LogFatal(format string, args ...interface{})
+	Debug(format string, args ...interface{})
+	Trace(format string, args ...interface{})
+	Info(format string, args ...interface{})
+	Warn(format string, args ...interface{})
+	Error(format string, args ...interface{})
+	Fatal(format string, args ...interface{})
 
 	Close()
 }
@@ -49,28 +49,28 @@ func Init(logType, level int, filename string, module string) error {
 	return logger.Init()
 }
 
-func LogDebug(fmt string, args ...interface{}) {
-	logger.LogDebug(fmt, args...)
+func Debug(fmt string, args ...interface{}) {
+	logger.Debug(fmt, args...)
 }
 
-func LogTrace(fmt string, args ...interface{}) {
-	logger.LogTrace(fmt, args...)
+func Trace(fmt string, args ...interface{}) {
+	logger.Trace(fmt, args...)
 }
 
-func LogInfo(fmt string, args ...interface{}) {
-	logger.LogInfo(fmt, args...)
+func Info(fmt string, args ...interface{}) {
+	logger.Info(fmt, args...)
 }
 
-func LogWarn(fmt string, args ...interface{}) {
-	logger.LogWarn(fmt, args...)
+func Warn(fmt string, args ...interface{}) {
+	logger.Warn(fmt, args...)
 }
 
-func LogError(fmt string, args ...interface{}) {
-	logger.LogError(fmt, args...)
+func Error(fmt string, args ...interface{}) {
+	logger.Error(fmt, args...)
 }
 
-func LogFatal(fmt string, args ...interface{}) {
-	logger.LogFatal(fmt, args...)
+func Fatal(fmt string, args ...interface{}) {
+	logger.Fatal(fmt, args...)
 }
 
 func Close() {
@@ -80,3 +80,4 @@ func Close() {
 //func SetLevel(level int) {
 //	logger.SetLevel(level)
 //}
+

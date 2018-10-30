@@ -1,4 +1,4 @@
-package loglib
+package logging
 
 import (
 	"os"
@@ -85,32 +85,33 @@ func (f *File) splitLog() {
 func (f *File) Init() (err error) {
 	f.file, err = os.OpenFile(f.filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0755)
 	if err != nil {
+		fmt.Printf("openfile failed .....")
 		return
 	}
 	return
 }
 
-func (f *File) LogDebug(format string, args ...interface{}) {
+func (f *File) Debug(format string, args ...interface{}) {
 	f.outLog(LogLevelDebug, f.file, format, args...)
 }
 
-func (f *File) LogTrace(format string, args ...interface{}) {
+func (f *File) Trace(format string, args ...interface{}) {
 	f.outLog(LogLevelTrace, f.file, format, args...)
 }
 
-func (f *File) LogInfo(format string, args ...interface{}) {
+func (f *File) Info(format string, args ...interface{}) {
 	f.outLog(LogLevelInfo, f.file, format, args...)
 }
 
-func (f *File) LogWarn(format string, args ...interface{}) {
+func (f *File) Warn(format string, args ...interface{}) {
 	f.outLog(LogLevelWarn, f.file, format, args...)
 }
 
-func (f *File) LogError(format string, args ...interface{}) {
+func (f *File) Error(format string, args ...interface{}) {
 	f.outLog(LogLevelError, f.file, format, args...)
 }
 
-func (f *File) LogFatal(format string, args ...interface{}) {
+func (f *File) Fatal(format string, args ...interface{}) {
 	f.outLog(LogLevelFatal, f.file, format, args...)
 }
 

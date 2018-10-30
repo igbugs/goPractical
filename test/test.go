@@ -1,27 +1,85 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
+	"fmt"
+	"net"
+	"logging"
 )
 
-func main() {
-	router := gin.Default()
+func GetLocalIP() (ip string, err error) {
+	var localIP string
+		if len(localIP) > 0 {
+			ip = localIP
+			return
+		}
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		logging.Error("get local ip failed, err: %v", err)
+	}
 
-	// 这个处理器将去匹配 /user/john ， 但是它不会去匹配 /user
-	router.GET("/user/:name", func(c *gin.Context) {
-		name := c.Param("name")
-		c.String(http.StatusOK, "Hello %s", name)
-	})
+	for _, addr := range addrs {
+		ipAddr, ok := addr.(*net.IPNet)
+		if !ok {
+			continue
+		}
+		if ipAddr.IP.IsLoopback() {
+			continue
+		}
+		if !ipAddr.IP.IsGlobalUnicast() {
+			continue
+		}
 
-	// 然而，这个将会匹配 /user/john 并且也会匹配 /user/john/send
-	// 如果没有其他的路由匹配 /user/john ， 它将重定向到 /user/john/
-	router.GET("/user/:name/*action", func(c *gin.Context) {
-		name := c.Param("name")
-		action := c.Param("action")
-		message := name + " is " + action
-		c.String(http.StatusOK, message)
-	})
+		logging.Debug("get local ip: %#v\n", ipAddr.IP.String())
+		localIP = ipAddr.IP.String()
+		ip = localIP
+		return
+	}
+	return
+}
 
-	router.Run(":8080")
+
+//var (
+//	localIP string
+//)
+
+//func GetLocalIP() (ip string, err error) {
+//	//if len(localIP) > 0 {
+//	//	ip = localIP
+//	//	return
+//	//}
+//
+//	addrs, err := net.InterfaceAddrs()
+//	if err != nil {
+//		return
+//	}
+//
+//	for _, addr := range addrs {
+//		ipAddr, ok := addr.(*net.IPNet)
+//		if !ok {
+//			continue
+//		}
+//
+//		if ipAddr.IP.IsLoopback() {
+//			continue
+//		}
+//
+//		if !ipAddr.IP.IsGlobalUnicast() {
+//			continue
+//		}
+//
+//		logging.Debug("get local ip:%#v\n", ipAddr.IP.String())
+//		localIP = ipAddr.IP.String()
+//		ip = localIP
+//		return
+//	}
+//	return
+//}
+
+func main()  {
+	localIP, err := GetLocalIP()
+	if err != nil {
+		fmt.Printf("getlocalip failed, err:%v\n", err)
+	}
+	fmt.Printf("localIP: %v\n", localIP)
+
 }
