@@ -5,7 +5,13 @@ import (
 	"logging"
 )
 
+var localIP string
+
 func GetLocalIP() (localIP string, err error) {
+	if len(localIP) > 0 {
+		return localIP, nil
+	}
+
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
 		logging.Error("get local ip failed, err: %v", err)
@@ -23,7 +29,7 @@ func GetLocalIP() (localIP string, err error) {
 			continue
 		}
 
-		logging.Debug("get local ip: %#v\n", ip.IP.String())
+		logging.Debug("get local ip: %#v", ip.IP.String())
 		localIP = ip.IP.String()
 		return
 	}

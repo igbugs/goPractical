@@ -41,7 +41,6 @@ func main()  {
 	}
 	cancel()
 
-
 	ctx, cancel = context.WithTimeout(context.Background(),  3 * time.Second)
 	resp, err := cli.Get(ctx, "/logagent/172.16.30.251/conf/")
 	if err != nil {

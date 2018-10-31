@@ -104,7 +104,7 @@ func GetConfig(key string) (conf []*conf.MsgLogConf, err error) {
 	return
 }
 
-func GetSystemInfoConfig(key string) (conf []*conf.MsgSystemConf, err error) {
+func GetSystemInfoConfig(key string) (conf *conf.MsgSystemConf, err error) {
 	resp, err := etcdClient.client.Get(context.Background(), key)
 	if err != nil {
 		logging.Error("get key: %v from etcd failed, err: %v", key, err)

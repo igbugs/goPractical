@@ -11,14 +11,17 @@ import (
 	"logging"
 	"strings"
 	"sync"
+	"time"
+	"log_agent/collect_sys_info"
 )
 
 var (
 	wg sync.WaitGroup
 )
 
-func run() (err error) {
-	wg.Add(1)
+func run(sysInfoConf *conf.MsgSystemConf) (err error) {
+	wg.Add(2)
+	go collect_sys_info.Run(&wg, sysInfoConf.Interval, sysInfoConf.Topic)
 	go tailf.Run(&wg)
 	wg.Wait()
 	return
@@ -73,7 +76,18 @@ func main() {
 	}
 	logging.Debug("init tailf client success")
 
-	err = run()
+	systemInfoKey := fmt.Sprintf(conf.AppEtcdSetting.SystemInfoKey, localIP)
+	systemInfoConf, err := etcd.GetSystemInfoConfig(systemInfoKey)
+	if err != nil {
+		systemInfoConf = &conf.MsgSystemConf{
+			Topic: "collect_system_info",
+			Interval: 5 * time.Second,
+		}
+		logging.Error("get collect system info config from etcd failed, use default conf: %#v, err: %v",
+			systemInfoConf, err)
+	}
+
+	err = run(systemInfoConf)
 	if err != nil {
 		logging.Error("main.run failed, err:%v", err)
 		return

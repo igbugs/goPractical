@@ -15,7 +15,7 @@ type LogBase struct {
 
 
 func (l *LogBase) writeLog(file *os.File, ld *LogData) (err error) {
-	_, err = fmt.Fprintf(file, "[%s] [%s] [%s] [%s:%s:%d] [%s]\n",
+	_, err = fmt.Fprintf(file, "[%s] [%s] [%s] [%s:%s:%d] %s\n",
 		ld.timeStr, ld.levelStr, ld.module,
 		ld.fileName, ld.funcName, ld.lineNo,
 		ld.data)
