@@ -29,7 +29,7 @@ func start()  {
 		}
 		movies = append(movies, parse.ParseMovies(doc)...)
 	}
-	//logging.Debug("movies: %v, %v", movies, len(movies))
+	logging.Debug("movies: %v, %v", movies, len(movies))
 	add(movies)
 }
 
