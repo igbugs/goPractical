@@ -1,8 +1,6 @@
 package collect_sys_info
 
 import (
-	_ "github.com/shirou/gopsutil/host"
-	"github.com/shirou/gopsutil/disk"
 	"logging"
 	"encoding/json"
 	"log_agent/common/ip"
@@ -13,6 +11,7 @@ import (
 	"github.com/shirou/gopsutil/load"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
+	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/host"
 )
 
