@@ -4,11 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/Unknwon/com"
 	"gin-blog/pkg/e"
-		"gin-blog/pkg/util"
+	"gin-blog/pkg/util"
 	"gin-blog/pkg/setting"
 	"net/http"
 	"github.com/astaxie/beego/validation"
-		"gin-blog/pkg/app"
+	"gin-blog/pkg/app"
 	"gin-blog/service/tag_service"
 	"gin-blog/pkg/export"
 	"gin-blog/pkg/logging"
@@ -25,9 +25,9 @@ func GetTags(c *gin.Context) {
 	}
 
 	tagService := tag_service.Tag{
-		Name: name,
-		State: state,
-		PageNum: util.GetPage(c),
+		Name:     name,
+		State:    state,
+		PageNum:  util.GetPage(c),
 		PageSize: setting.AppSetting.PageSize,
 	}
 
@@ -76,9 +76,9 @@ func AddTag(c *gin.Context) {
 	}
 
 	tagService := tag_service.Tag{
-		Name: name,
+		Name:      name,
 		CreatedBy: createdBy,
-		State: state,
+		State:     state,
 	}
 
 	exists, err := tagService.ExistByName()
@@ -135,9 +135,9 @@ func EditTag(c *gin.Context) {
 	}
 
 	tagService := tag_service.Tag{
-		Name: name,
+		Name:       name,
 		ModifiedBy: modifiedBy,
-		State: state,
+		State:      state,
 	}
 
 	exists, err := tagService.ExistByName()
@@ -207,7 +207,7 @@ func ExportTag(c *gin.Context) {
 	valid.MaxSize(name, 100, "name").Message("名字最长为100字符")
 
 	data := map[string]interface{}{
-		"name": name,
+		"name":  name,
 		"state": state,
 	}
 	if valid.HasErrors() {
@@ -217,7 +217,7 @@ func ExportTag(c *gin.Context) {
 	}
 
 	tagService := tag_service.Tag{
-		Name: name,
+		Name:  name,
 		State: state,
 	}
 
@@ -229,7 +229,7 @@ func ExportTag(c *gin.Context) {
 	}
 
 	appG.Response(http.StatusOK, e.SUCCESS, map[string]interface{}{
-		"export_url": export.GetExcelFullUrl(filename),
+		"export_url":      export.GetExcelFullUrl(filename),
 		"export_save_url": export.GetExcelFullPath() + filename,
 	})
 }
