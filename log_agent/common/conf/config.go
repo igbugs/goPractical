@@ -1,7 +1,7 @@
 package conf
 
 import (
-		"github.com/go-ini/ini"
+	"github.com/go-ini/ini"
 	"logging"
 )
 
@@ -13,33 +13,32 @@ import (
 //}
 
 type AppLogConf struct {
-	LogLevel string		`ini:"log_level"`
-	Filename string		`ini:"filename"`
-	LogType string		`ini:"log_type"`
-	Module string		`ini:"module"`
+	LogLevel string `ini:"log_level"`
+	Filename string `ini:"filename"`
+	LogType  string `ini:"log_type"`
+	Module   string `ini:"module"`
 }
 
 type AppKafkaConf struct {
-	Address string		`ini:"address"`
-	QueueSize int		`ini:"queue_size"`
+	Address   string `ini:"address"`
+	QueueSize int    `ini:"queue_size"`
 }
 
 type AppEtcdConf struct {
-	Address string		`ini:"address"`
-	EtcdKey string		`ini:"etcd_key"`
-	SystemInfoKey string	`ini:"system_info_key"`
+	Address       string `ini:"address"`
+	EtcdKey       string `ini:"etcd_key"`
+	SystemInfoKey string `ini:"system_info_key"`
 }
 
 var (
 	cfg *ini.File
 	//AppSet = AppConfig{}
-	AppLogSetting = &AppLogConf{}
+	AppLogSetting   = &AppLogConf{}
 	AppKafkaSetting = &AppKafkaConf{}
-	AppEtcdSetting = &AppEtcdConf{}
-
+	AppEtcdSetting  = &AppEtcdConf{}
 )
 
-func mapTo(section string, v interface{})  {
+func mapTo(section string, v interface{}) {
 	err := cfg.Section(section).MapTo(v)
 	if err != nil {
 		logging.Fatal("cfg.MapTo Setting %v , err: %v", v, err)
@@ -51,7 +50,7 @@ func Init() (err error) {
 	if err != nil {
 		logging.Fatal("Fail to parse 'conf/conf.ini'; %v", err)
 		return
-}
+	}
 
 	mapTo("kafka", AppKafkaSetting)
 	mapTo("logs", AppLogSetting)
@@ -60,4 +59,3 @@ func Init() (err error) {
 	logging.Debug("load config success")
 	return
 }
-

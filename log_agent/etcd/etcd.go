@@ -11,8 +11,8 @@ import (
 )
 
 type EtcdClient struct {
-	client *clientv3.Client
-	address []string
+	client   *clientv3.Client
+	address  []string
 	watchKey string
 	dataChan chan []*conf.MsgLogConf
 }
@@ -23,13 +23,13 @@ var (
 
 func Init(address []string, watchKey string) (err error) {
 	etcdClient = &EtcdClient{
-		address: address,
+		address:  address,
 		watchKey: watchKey,
 		dataChan: make(chan []*conf.MsgLogConf),
 	}
 
-	etcdClient.client, err = clientv3.New(clientv3.Config {
-		Endpoints: address,
+	etcdClient.client, err = clientv3.New(clientv3.Config{
+		Endpoints:   address,
 		DialTimeout: 3 * time.Second,
 	})
 
@@ -130,4 +130,3 @@ func GetSystemInfoConfig(key string) (conf *conf.MsgSystemConf, err error) {
 	return
 
 }
-

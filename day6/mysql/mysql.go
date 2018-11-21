@@ -227,7 +227,7 @@ func Transaction(Db *sql.DB) {
 }
 
 func main() {
-	dsn := "gouser:123456@tcp(192.168.247.133:3306)/test"
+	dsn := "gouser:123456@tcp_chat(192.168.247.133:3306)/test"
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		fmt.Printf("open mysql failed, err: %v\n", err)

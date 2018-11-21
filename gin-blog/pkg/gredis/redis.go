@@ -15,7 +15,7 @@ func Setup() error {
 		MaxActive: setting.RedisSetting.MaxActive,
 		IdleTimeout: setting.RedisSetting.IdleTimeout,
 		Dial: func() (redis.Conn, error) {
-			c, err := redis.Dial("tcp", setting.RedisSetting.Host)
+			c, err := redis.Dial("tcp_chat", setting.RedisSetting.Host)
 			if err != nil {
 				return nil, err
 			}

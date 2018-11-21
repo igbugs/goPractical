@@ -1,42 +1,53 @@
 package main
 
 import (
-	"time"
-	"fmt"
-)
+		"fmt"
+	)
 
-func worker(id int, c chan int)  {
-	for n := range c {
+func doWork(id int, in chan int, done chan bool) {
+	for n := range in {
 		fmt.Printf("Worker %d received %c\n", id, n)
+		go func() {
+			done <- true
+		}()
 	}
 }
 
-
-func createWorker(id int) chan<- int {
-	c := make(chan int)
-	go worker(id, c)
-
-	return c
+type worker struct {
+	in chan int
+	done chan bool
 }
 
-func chanDemo()  {
-	var channels [10]chan<- int
+func createWorker(id int) worker {
+	w := worker{
+		in: make(chan int),
+		done: make(chan bool),
+	}
+	go doWork(id, w.in, w.done)
+
+	return w
+}
+
+func chanDemo() {
+	var workers [10]worker
 	for i := 0; i < 10; i++ {
-		channels[i] = createWorker(i)
+		workers[i] = createWorker(i)
 	}
 
-	for i := 0; i < 10; i++ {
-		channels[i] <- 'a' + i
+	for i, worker := range workers {
+		worker.in <- 'a' + i
 	}
 
-	for i := 0; i < 10; i++ {
-		channels[i] <- 'A' + i
+	for i, worker := range workers {
+		worker.in <- 'A' + i
 	}
-	time.Sleep(time.Millisecond)
+
+	for _, worker := range workers {
+		<-worker.done
+		<-worker.done
+	}
 }
 
 func main() {
 	chanDemo()
 }
-
-

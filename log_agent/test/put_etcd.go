@@ -4,7 +4,7 @@ import (
 	"go.etcd.io/etcd/clientv3"
 	"time"
 	"fmt"
-	"golang.org/x/net/context"
+	"context"
 	"log_agent/common/conf"
 	"encoding/json"
 )
@@ -14,8 +14,9 @@ func main()  {
 		Endpoints: []string{"192.168.247.133:2379"},
 		DialTimeout: 3 * time.Second,
 	})
+
 	if err != nil {
-		fmt.Println("connect fialed, err: ", err)
+		fmt.Println("connect failed, err: ", err)
 	}
 
 	fmt.Println("connect success")
@@ -29,6 +30,7 @@ func main()  {
 	var logconfs []*conf.MsgLogConf
 	logconfs = append(logconfs, logconf)
 	jsonData, err := json.Marshal(logconfs)
+	fmt.Println(string(jsonData))
 	if err != nil {
 		fmt.Println("json marshal failed, err: ", err)
 	}
@@ -42,7 +44,7 @@ func main()  {
 	cancel()
 
 	ctx, cancel = context.WithTimeout(context.Background(),  3 * time.Second)
-	resp, err := cli.Get(ctx, "/logagent/172.16.30.251/conf/")
+	resp, err := cli.Get(ctx, "/logagent/172.16.30.251/conf")
 	if err != nil {
 		fmt.Println("get failed, err:", err)
 		return

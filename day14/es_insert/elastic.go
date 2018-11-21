@@ -4,44 +4,45 @@ import (
 	"github.com/olivere/elastic"
 	"fmt"
 	"math/rand"
+	"context"
 )
 
 type Person struct {
-	ID int		`json:"id"`
+	ID   int    `json:"id"`
 	Name string `json:"name"`
 	Age  int    `json:"age"`
 	City string `json:"city"`
 	Desc string `json:"desc"`
 }
 
-func main()  {
+func main() {
 	client, err := elastic.NewClient(elastic.SetSniff(false),
-		elastic.SetURL("http://192.168.20.200"))
+		elastic.SetURL("http://192.168.247.131:9200"))
 	if err != nil {
 		fmt.Printf("new client failed, err: %v", err)
 		return
 	}
-	fmt.Printf("set client config success")
+	fmt.Println("set client config success")
 
 	for i := 0; i < 10000; i++ {
 		p := Person{
-			ID: i,
+			ID:   i,
 			Name: fmt.Sprintf("xyb%d", i),
-			Age: rand.Intn(30),
+			Age:  rand.Intn(30),
 			City: "beijing",
-			Desc: "wo wo hah en",
+			Desc: "wo wo ha en",
 		}
 
 		_, err = client.Index().
 			Index("account").
 			Type("person").
 			BodyJson(p).
-			Do()
+			Do(context.Background())
 		if err != nil {
 			fmt.Printf("insert es failed, err: %v", err)
 			return
 		}
 
-		fmt.Printf("insert es success")
+		fmt.Println("insert es success")
 	}
 }

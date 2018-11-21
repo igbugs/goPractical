@@ -19,6 +19,10 @@ func tryDefer()  {
 		//	defer fmt.Println(i)
 		//}()
 		defer fmt.Println(i)
+
+		//defer func() {
+		//	fmt.Println(i)
+		//}()
 		if i == 20 {
 			panic("printed too many.")
 		}

@@ -2,9 +2,9 @@ package logs
 
 import (
 	"logging"
-	"log_agent/common/conf"
 	"path/filepath"
 	"fmt"
+	"log_transfer/common/config"
 )
 
 func Init() (err error) {
@@ -24,19 +24,19 @@ func Init() (err error) {
 		"fatal": logging.LogLevelFatal,
 	}
 
-	if v, ok := logTypeMap[conf.AppLogSetting.LogType]; ok {
+	if v, ok := logTypeMap[conf.LogSetting.LogType]; ok {
 		logType = v
 	} else {
 		logType = logTypeMap["console"]
 	}
 
-	if v, ok := levelMap[conf.AppLogSetting.LogLevel]; ok {
+	if v, ok := levelMap[conf.LogSetting.LogLevel]; ok {
 		level = v
 	} else {
 		level = levelMap["debug"]
 	}
 
-	filePath := conf.AppLogSetting.Filename
+	filePath := conf.LogSetting.Filename
 	path, filename := filepath.Split(filePath)
 
 	err = logging.MustDir(filename, path)
@@ -44,7 +44,7 @@ func Init() (err error) {
 		fmt.Printf("make dir failed, err: %v\n", err)
 	}
 
-	err = logging.Init(logType, level, filePath, conf.AppLogSetting.Module)
+	err = logging.Init(logType, level, filePath, conf.LogSetting.Module)
 	if err != nil {
 		return
 	}

@@ -13,7 +13,7 @@ import (
 var Db *sql.DB
 
 func init()  {
-	dsn := "gouser:123456@tcp(192.168.247.133:3306)/golang?charset=utf8mb4&parseTime=true"
+	dsn := "gouser:123456@tcp_chat(192.168.247.133:3306)/golang?charset=utf8mb4&parseTime=true"
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		fmt.Printf("open mysql failed, err: %v\n", err)

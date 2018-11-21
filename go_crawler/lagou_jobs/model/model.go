@@ -18,7 +18,7 @@ var (
 
 func init() {
 	var err error
-	DB, err = gorm.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+	DB, err = gorm.Open("mysql", fmt.Sprintf("%s:%s@tcp_chat(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		username, password, hostname, dbName))
 	if err != nil {
 		logging.Error("gorm.Open failed, err: %v", err)

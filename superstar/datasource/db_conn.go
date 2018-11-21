@@ -27,7 +27,7 @@ func InstanceMaster() *xorm.Engine {
 	}
 
 	c := conf.MasterDbConfig
-	driverSource := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8",
+	driverSource := fmt.Sprintf("%s:%s@tcp_chat(%s:%d)/%s?charset=utf8",
 		c.User, c.Password, c.Host, c.Port, c.DBName)
 	engine, err := xorm.NewEngine(conf.DriverName, driverSource)
 	if err != nil {
@@ -57,7 +57,7 @@ func InstanceSlave() *xorm.Engine {
 	}
 
 	c := conf.SlaveDbConfig
-	driverSource := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8",
+	driverSource := fmt.Sprintf("%s:%s@tcp_chat(%s:%d)/%s?charset=utf8",
 		c.User, c.Password, c.Host, c.Port, c.DBName)
 	engine, err := xorm.NewEngine(conf.DriverName, driverSource)
 	if err != nil {

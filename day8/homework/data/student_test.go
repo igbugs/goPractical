@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	dns := "root:123456@tcp(192.168.247.133:3306)/library_mgr?parseTime=True"
+	dns := "root:123456@tcp_chat(192.168.247.133:3306)/library_mgr?parseTime=True"
 	err := Init(dns)
 	if err != nil {
 		panic(err)

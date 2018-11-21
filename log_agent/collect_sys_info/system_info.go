@@ -69,10 +69,9 @@ func collectDisk() {
 	sendToKafka(SystemTypeDisk, diskInfo)
 }
 
-
 type CpuInfo struct {
-	Percent      float64          `json:"percent"`
-	CpuLoad      load.AvgStat     `json:"cpu_load"`
+	Percent      float64         `json:"percent"`
+	CpuLoad      load.AvgStat    `json:"cpu_load"`
 	InfoStat     []cpu.InfoStat  `json:"info_stat"`
 	CoreTimeStat []cpu.TimesStat `json:"core_time_stat"`
 }
@@ -117,13 +116,12 @@ func collectCpu() {
 	sendToKafka(SystemTypeCpu, &cpuInfo)
 }
 
-
 type MemInfo struct {
-	VMStat *mem.VirtualMemoryStat	`json:"vm_stat"`
-	SwapStat *mem.SwapMemoryStat		`json:"swap_stat"`
+	VMStat   *mem.VirtualMemoryStat `json:"vm_stat"`
+	SwapStat *mem.SwapMemoryStat    `json:"swap_stat"`
 }
 
-func collectMem()  {
+func collectMem() {
 	var memInfo MemInfo
 
 	vmInfo, err := mem.VirtualMemory()
@@ -145,10 +143,10 @@ func collectMem()  {
 }
 
 type NetInfo struct {
-	NetInterfaces []net.IOCountersStat	`json:"net_interfaces"`
+	NetInterfaces []net.IOCountersStat `json:"net_interfaces"`
 }
 
-func collectNet()  {
+func collectNet() {
 	var netInfo NetInfo
 	//netInfo.NetInterfaces = make(map[string]*net.IOCountersStat, 16)
 
@@ -165,12 +163,11 @@ func collectNet()  {
 	sendToKafka(SystemTypeNet, &netInfo)
 }
 
-
 type HostInfo struct {
-	HostInfo *host.InfoStat	`json:"host_info"`
+	HostInfo *host.InfoStat `json:"host_info"`
 }
 
-func collectHostInfo()  {
+func collectHostInfo() {
 	var hostInfo HostInfo
 
 	info, err := host.Info()

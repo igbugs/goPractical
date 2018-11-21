@@ -4,7 +4,7 @@ import "fmt"
 
 type Person struct {
 	Name string
-	Age int
+	Age  int
 	City string
 }
 
@@ -18,16 +18,16 @@ func (p *Person) SetAge(age int) *Person {
 	return p
 }
 
-func (p *Person) SetCity(city string) *Person  {
+func (p *Person) SetCity(city string) *Person {
 	p.City = city
 	return p
 }
 
-func (p *Person) Print()  {
+func (p *Person) Print() {
 	fmt.Printf("Name: %s, Age: %d, City: %s", p.Name, p.Age, p.City)
 }
 
-func main()  {
+func main() {
 	p := Person{}
 	p.SetName("xyb").SetAge(18).SetCity("beijing").Print()
 }

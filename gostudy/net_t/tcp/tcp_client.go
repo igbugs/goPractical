@@ -20,10 +20,10 @@ func main() {
 	}
 
 	service := os.Args[1]
-	tcpAddr, err := net.ResolveTCPAddr("tcp", service)
+	tcpAddr, err := net.ResolveTCPAddr("tcp_chat", service)
 	checkError(err)
 
-	conn, err := net.DialTCP("tcp", nil, tcpAddr)
+	conn, err := net.DialTCP("tcp_chat", nil, tcpAddr)
 	checkError(err)
 	defer conn.Close()
 

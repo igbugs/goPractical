@@ -34,10 +34,10 @@ func handleClient(conn net.Conn) {
 
 func main() {
 	service := ":5000"
-	tcpAddr, err := net.ResolveTCPAddr("tcp", service)
+	tcpAddr, err := net.ResolveTCPAddr("tcp_chat", service)
 	checkError(err)
 
-	listener, err := net.ListenTCP("tcp", tcpAddr)
+	listener, err := net.ListenTCP("tcp_chat", tcpAddr)
 	checkError(err)
 
 	for {

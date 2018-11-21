@@ -7,12 +7,12 @@ import (
 )
 
 type Message struct {
-	Data string
+	Data  string
 	Topic string
 }
 
 var (
-	client sarama.SyncProducer
+	client  sarama.SyncProducer
 	msgChan chan *Message
 )
 
@@ -28,6 +28,8 @@ func Init(addr []string, chanSize int) (err error) {
 		logging.Error("new producer failed, err: %v", err)
 		return
 	}
+	// 初始化完成后不能进行 client 的关闭，后续会一直进行使用
+	//defer client.Close()
 
 	msgChan = make(chan *Message, chanSize)
 	go sendKafka()
@@ -44,11 +46,11 @@ func SendLog(msg *Message) (err error) {
 	default:
 		err = fmt.Errorf("msgChan is full")
 	}
-	
-	return 
+
+	return
 }
 
-func sendKafka()  {
+func sendKafka() {
 	for msg := range msgChan {
 		kafkaMsg := &sarama.ProducerMessage{}
 		kafkaMsg.Topic = msg.Topic
