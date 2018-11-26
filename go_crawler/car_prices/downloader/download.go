@@ -1,11 +1,11 @@
 package downloader
 
 import (
-	"io"
-	"net/http"
-	"logging"
-	"go_crawler/car_prices/fake_agent"
 	"github.com/axgle/mahonia"
+	"go_crawler/car_prices/fake_agent"
+	"io"
+	"logging"
+	"net/http"
 )
 
 func Get(url string) io.Reader {

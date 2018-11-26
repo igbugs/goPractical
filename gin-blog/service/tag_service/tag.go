@@ -1,31 +1,31 @@
 package tag_service
 
 import (
+	"encoding/json"
 	"gin-blog/models"
-	"gin-blog/service/cache_service"
+	"gin-blog/pkg/export"
 	"gin-blog/pkg/gredis"
 	"gin-blog/pkg/logging"
-	"encoding/json"
+	"gin-blog/service/cache_service"
+	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/tealeg/xlsx"
+	"io"
 	"strconv"
 	"time"
-	"gin-blog/pkg/export"
-	"io"
-	"github.com/360EntSecGroup-Skylar/excelize"
-		)
+)
 
 type Tag struct {
-	ID int
-	Name string
-	CreatedBy string
+	ID         int
+	Name       string
+	CreatedBy  string
 	ModifiedBy string
-	State int
+	State      int
 
-	PageNum int
+	PageNum  int
 	PageSize int
 }
 
-func (t *Tag) ExistByName() (bool, error){
+func (t *Tag) ExistByName() (bool, error) {
 	return models.ExistTagByName(t.Name)
 }
 
@@ -60,8 +60,8 @@ func (t *Tag) GetAll() ([]models.Tag, error) {
 	var tags, cacheTags []models.Tag
 
 	cache := cache_service.Tag{
-		State: t.State,
-		PageNum: t.PageNum,
+		State:    t.State,
+		PageNum:  t.PageNum,
 		PageSize: t.PageSize,
 	}
 

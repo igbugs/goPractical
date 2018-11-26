@@ -1,12 +1,12 @@
 package main
 
 import (
-	"log"
-	"github.com/robfig/cron"
 	"gin-blog/models"
-	)
+	"github.com/robfig/cron"
+	"log"
+)
 
-func main()  {
+func main() {
 	log.Println("Starting...")
 
 	c := cron.New()

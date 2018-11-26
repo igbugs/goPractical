@@ -1,0 +1,9 @@
+.idea/*
+github.com/*
+golang.org/*
+gopkg.in/*
+go.etcd.io/*
+cloud.google.com/*
+*.log
+gin-blog/runtime/*
+main
