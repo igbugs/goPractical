@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"reflect"
 	"runtime"
-	"math"
 )
 
-func eval(a, b int, op string) (int, error)  {
+func eval(a, b int, op string) (int, error) {
 	switch op {
 	case "+":
 		return a + b, nil
@@ -28,10 +28,9 @@ func div(a, b int) (q, r int) {
 	return
 }
 
-
-func apply(op func(int, int,) int, a, b int) int {
-	p := reflect.ValueOf(op).Pointer()		// 获取函数的指针
-	opName := runtime.FuncForPC(p).Name()	// 获取函数的名字
+func apply(op func(int, int) int, a, b int) int {
+	p := reflect.ValueOf(op).Pointer()    // 获取函数的指针
+	opName := runtime.FuncForPC(p).Name() // 获取函数的名字
 	fmt.Printf("Calling function %s with args (%d, %d)\n", opName, a, b)
 	return op(a, b)
 }
@@ -48,7 +47,7 @@ func sum(numbers ...int) int {
 	return s
 }
 
-func swap(a, b *int)  {
+func swap(a, b *int) {
 	*a, *b = *b, *a
 }
 
@@ -56,7 +55,7 @@ func swap1(a, b int) (int, int) {
 	return b, a
 }
 
-func main()  {
+func main() {
 	if result, err := eval(100, 34, "//"); err != nil {
 		fmt.Println("ERROR: ", err)
 	} else {

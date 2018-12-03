@@ -13,7 +13,7 @@ type JobParam struct {
 	Kd   string
 }
 
-func NewScheduler() *JobParam  {
+func NewScheduler() *JobParam {
 	return &JobParam{}
 }
 

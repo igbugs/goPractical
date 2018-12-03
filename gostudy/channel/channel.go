@@ -1,11 +1,11 @@
 package main
 
 import (
-	"time"
 	"fmt"
+	"time"
 )
 
-func worker(id int, c chan int)  {
+func worker(id int, c chan int) {
 	//for {
 	//	n, ok := <- c
 	//	if !ok {
@@ -19,7 +19,6 @@ func worker(id int, c chan int)  {
 	}
 }
 
-
 func createWorker(id int) chan<- int {
 	c := make(chan int)
 	go worker(id, c)
@@ -27,7 +26,7 @@ func createWorker(id int) chan<- int {
 	return c
 }
 
-func chanDemo()  {
+func chanDemo() {
 	var channels [10]chan<- int
 	for i := 0; i < 10; i++ {
 		channels[i] = createWorker(i)
@@ -44,7 +43,7 @@ func chanDemo()  {
 }
 
 func bufferedChannel() {
-	c := make(chan int, 3)		// 会指定缓冲区的大小
+	c := make(chan int, 3) // 会指定缓冲区的大小
 	//go worker(0, c)
 	c <- 'a'
 	c <- 'b'
@@ -69,5 +68,3 @@ func main() {
 	//bufferedChannel()
 	channelClose()
 }
-
-

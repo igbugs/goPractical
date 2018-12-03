@@ -8,19 +8,19 @@ import (
 )
 
 var (
-	length int
+	length  int
 	charset string
 )
 
 const (
-	numStr = "0123456789"
-	charStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	numStr     = "0123456789"
+	charStr    = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	specialStr = "~!@#$%^&*()_+{}[]|:;<>,?/"
 )
 
-func getArgs()  {
-	flag.IntVar(&length,"l",16, "-l 密码的长度(length)")
-	flag.StringVar(&charset, "t","mix",
+func getArgs() {
+	flag.IntVar(&length, "l", 16, "-l 密码的长度(length)")
+	flag.StringVar(&charset, "t", "mix",
 		`-t 指定密码生成的字符集, 
 num: 密码只有数字,
 char: 密码只有字母,

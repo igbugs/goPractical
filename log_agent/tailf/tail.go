@@ -1,14 +1,14 @@
 package tailf
 
 import (
-	"github.com/hpcloud/tail"
 	"context"
-	"logging"
-	"fmt"
-	"log_agent/common/conf"
-	"log_agent/common/ip"
 	"encoding/json"
+	"fmt"
+	"github.com/hpcloud/tail"
+	"log_agent/common/config"
+	"log_agent/common/ip"
 	"log_agent/kafka"
+	"logging"
 )
 
 type TailTask struct {
@@ -84,7 +84,7 @@ func (t *TailTask) Run() {
 			}
 
 			logging.Debug("line: %s", line.Text)
-			data := &conf.MsgData{
+			data := &config.MsgData{
 				IP:   localIP,
 				Data: line.Text,
 			}

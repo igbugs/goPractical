@@ -15,7 +15,7 @@ func NewConsole(level int, module string) Logger {
 
 	logger := &Console{
 		LogBase: &LogBase{
-			level: level,
+			level:  level,
 			module: module,
 		},
 	}

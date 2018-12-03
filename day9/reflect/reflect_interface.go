@@ -1,11 +1,11 @@
 package main
 
 import (
-	"reflect"
 	"fmt"
-	)
+	"reflect"
+)
 
-func testType(i interface{})  {
+func testType(i interface{}) {
 	t := reflect.TypeOf(i)
 	fmt.Printf("i 的类型为: %v\n", t)
 
@@ -17,7 +17,7 @@ func testType(i interface{})  {
 	}
 }
 
-func testValue(i interface{})  {
+func testValue(i interface{}) {
 	v := reflect.ValueOf(i)
 
 	switch v.Type().Kind() {

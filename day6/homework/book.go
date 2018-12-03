@@ -1,39 +1,39 @@
 package main
 
 import (
-	"fmt"
 	"database/sql"
-	"time"
+	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Book struct {
-	ID int				`db:"id"`
-	Sn string			`db:"sn"`
-	Name string			`db:"name"`
-	Num uint			`db:"number"`
-	Author string		`db:"author"`
-	Publish time.Time	`db:"publish_date"`
+	ID      int       `db:"id"`
+	Sn      string    `db:"sn"`
+	Name    string    `db:"name"`
+	Num     uint      `db:"number"`
+	Author  string    `db:"author"`
+	Publish time.Time `db:"publish_date"`
 }
 
-type BookMgr struct {}
+type BookMgr struct{}
 
 type Qbook struct {
-	ID string
-	Sn string
-	Name string
-	Num string
-	Author string
+	ID           string
+	Sn           string
+	Name         string
+	Num          string
+	Author       string
 	BeginPubDate string
-	EndPubDate string
+	EndPubDate   string
 }
 
 func (bm BookMgr) Query(qb Qbook, db *sql.DB) []Book {
 	sqlStr := "SELECT * FROM book WHERE 1=1"
 
 	if qb.ID != "" {
-		sqlStr += " AND id=" +  qb.ID
+		sqlStr += " AND id=" + qb.ID
 	}
 	if qb.Sn != "" {
 		sqlStr += " AND sn='" + qb.Sn + "'"

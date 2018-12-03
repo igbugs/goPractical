@@ -17,7 +17,7 @@ func main() {
 	go func() {
 		fmt.Printf("read from channel\n")
 		var a int
-		a = <- intChan
+		a = <-intChan
 		fmt.Printf("a = %d\n", a)
 	}()
 

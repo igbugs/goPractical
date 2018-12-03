@@ -15,7 +15,7 @@ import (
 //	logger.LogError("dskskdskfksdf")
 //}
 
-func logic()  {
+func logic() {
 	for {
 		logging.Debug("dskskdskfksdf, user_id:%d username:%s", 388338, "username")
 		logging.Trace("dskskdskfksdf")
@@ -30,7 +30,7 @@ func logic()  {
 func main() {
 
 	var logTypeStr string
-	flag.StringVar(&logTypeStr, "type", "file",  "please input logger type")
+	flag.StringVar(&logTypeStr, "type", "file", "please input logger type")
 	flag.Parse()
 
 	var logType int

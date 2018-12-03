@@ -1,14 +1,14 @@
 package main
 
 import (
-	"testing"
-	"net/http"
-	"net/http/httptest"
-	"io/ioutil"
-	"strings"
-	"os"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"strings"
+	"testing"
 )
 
 func errPanic(writer http.ResponseWriter, request *http.Request) error {
@@ -47,16 +47,16 @@ func noError(writer http.ResponseWriter, request *http.Request) error {
 }
 
 var tests = []struct {
-		h appHandler		// appHandler 类型的函数
-		code int			// 返回的状态码
-		message string		// 输出的报错信息
-	}{
-		{errPanic, 500, "Internal Server Error"},
-		{errUserError, 400, "user error"},
-		{errNotFound, 404, "Not Found"},
-		{errNoPermission, 403, "Forbidden"},
-		{errUnknown, 500, "Internal Server Error"},
-		{noError, 200, "no error"},
+	h       appHandler // appHandler 类型的函数
+	code    int        // 返回的状态码
+	message string     // 输出的报错信息
+}{
+	{errPanic, 500, "Internal Server Error"},
+	{errUserError, 400, "user error"},
+	{errNotFound, 404, "Not Found"},
+	{errNoPermission, 403, "Forbidden"},
+	{errUnknown, 500, "Internal Server Error"},
+	{noError, 200, "no error"},
 }
 
 func verifyResponse(resp *http.Response, expectedCdoe int, expectedMsg string, t *testing.T) {
@@ -67,7 +67,6 @@ func verifyResponse(resp *http.Response, expectedCdoe int, expectedMsg string, t
 			expectedCdoe, expectedMsg, resp.StatusCode, body)
 	}
 }
-
 
 func TestErrWrapper(t *testing.T) {
 

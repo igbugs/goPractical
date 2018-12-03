@@ -6,23 +6,23 @@ import (
 )
 
 type ServerConf struct {
-	Host string	`ini:"host"`
-	Port int	`ini:"port"`
+	Host string `ini:"host"`
+	Port int    `ini:"port"`
 }
 
 type DbConf struct {
-	User string		`ini:"user"`
-	Password string	`ini:"password"`
-	Host string 	`ini:"host"`
-	Port int  		`ini:"port"`
-	Database string `ini:"database"`
-	Rate float32 	`ini:"rate"`
+	User     string  `ini:"user"`
+	Password string  `ini:"password"`
+	Host     string  `ini:"host"`
+	Port     int     `ini:"port"`
+	Database string  `ini:"database"`
+	Rate     float32 `ini:"rate"`
 }
 
 type Config struct {
-	Server ServerConf	`ini:"server"`
-	CartDb DbConf		`ini:"cartdb"`
-} 
+	Server ServerConf `ini:"server"`
+	CartDb DbConf     `ini:"cartdb"`
+}
 
 func main() {
 	var conf Config

@@ -17,7 +17,6 @@ import (
 //	fmt.Printf("%v", c)
 //}
 
-
 type point struct {
 	x, y int
 }

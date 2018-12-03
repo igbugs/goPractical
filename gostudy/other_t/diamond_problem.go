@@ -21,8 +21,8 @@ type T4 struct {
 }
 
 func main() {
-	t2 := T2{ T4{ 9000 }, 2}
-	t3 := T3{ T4{ 3 } }
+	t2 := T2{T4{9000}, 2}
+	t3 := T3{T4{3}}
 	fmt.Printf("foo = %d\n", t2.foo)
 	fmt.Printf("foo = %d\n", t2.T4.foo)
 	fmt.Printf("foo = %d\n", t3.foo)

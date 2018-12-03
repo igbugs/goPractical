@@ -40,7 +40,7 @@ func PopCount(x uint64) int {
 		pc[byte(x>>(7*8))])
 }
 
-func main()  {
+func main() {
 
 	var a uint64 = 24
 	b := PopCount(a)

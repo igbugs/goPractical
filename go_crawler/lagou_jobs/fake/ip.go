@@ -8,7 +8,7 @@ import (
 const PROXY_SERVER = ""
 
 type ProxyAuth struct {
-	License string
+	License   string
 	SecretKey string
 }
 

@@ -69,7 +69,7 @@ func assert(a Animal) {
 }
 
 func main() {
-	var a  Animal
+	var a Animal
 	var dog = &Dog{
 		name: "旺财",
 	}

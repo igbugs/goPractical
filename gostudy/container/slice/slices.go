@@ -6,7 +6,7 @@ import "fmt"
 //	s[0] = 100
 //}
 
-func main()  {
+func main() {
 	arr := [...]int{0, 1, 2, 3, 4, 5, 6, 7, 8}
 	//fmt.Println("arr[2:6] =", arr[2:6])
 	//fmt.Println("arr[:6] =", arr[:6])

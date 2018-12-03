@@ -1,19 +1,19 @@
 package v1
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/Unknwon/com"
-	"github.com/astaxie/beego/validation"
-	"gin-blog/pkg/e"
-	"net/http"
-	"gin-blog/pkg/util"
-	"gin-blog/pkg/setting"
 	"gin-blog/pkg/app"
+	"gin-blog/pkg/e"
+	"gin-blog/pkg/qrcode"
+	"gin-blog/pkg/setting"
+	"gin-blog/pkg/util"
 	"gin-blog/service/article_service"
 	"gin-blog/service/tag_service"
-	"gin-blog/pkg/qrcode"
+	"github.com/Unknwon/com"
+	"github.com/astaxie/beego/validation"
 	"github.com/boombuler/barcode/qr"
-		"io"
+	"github.com/gin-gonic/gin"
+	"io"
+	"net/http"
 )
 
 // 获取单个文章
@@ -38,7 +38,7 @@ func GetArticle(c *gin.Context) {
 		return
 	}
 
-	if ! exists {
+	if !exists {
 		appG.Response(http.StatusOK, e.ERROR_NOT_EXIST_ARTICLE, nil)
 		return
 	}
@@ -75,9 +75,9 @@ func GetArticles(c *gin.Context) {
 	}
 
 	articleService := article_service.Article{
-		TagID: tagId,
-		State: state,
-		PageNum: util.GetPage(c),
+		TagID:    tagId,
+		State:    state,
+		PageNum:  util.GetPage(c),
 		PageSize: setting.AppSetting.PageSize,
 	}
 
@@ -133,18 +133,18 @@ func AddArticle(c *gin.Context) {
 		return
 	}
 
-	if ! exists {
+	if !exists {
 		appG.Response(http.StatusOK, e.ERROR_EXIST_TAG_FAIL, nil)
 		return
 	}
 
 	articleService := article_service.Article{
-		TagID: tagId,
-		Title: title,
-		Desc: desc,
-		Content: content,
+		TagID:         tagId,
+		Title:         title,
+		Desc:          desc,
+		Content:       content,
 		CoverImageUrl: coverImageUrl,
-		State: state,
+		State:         state,
 	}
 
 	if err := articleService.Add(); err != nil {
@@ -193,12 +193,12 @@ func EditArticle(c *gin.Context) {
 	}
 
 	articleService := article_service.Article{
-		ID: id,
-		Title: title,
-		Desc: desc,
-		Content: content,
+		ID:            id,
+		Title:         title,
+		Desc:          desc,
+		Content:       content,
 		CoverImageUrl: coverImageUrl,
-		ModifiedBy: modifiedBy,
+		ModifiedBy:    modifiedBy,
 	}
 
 	exists, err := articleService.ExistByID()
@@ -207,7 +207,7 @@ func EditArticle(c *gin.Context) {
 		return
 	}
 
-	if ! exists {
+	if !exists {
 		appG.Response(http.StatusOK, e.ERROR_NOT_EXIST_ARTICLE, nil)
 		return
 	}
@@ -219,7 +219,7 @@ func EditArticle(c *gin.Context) {
 		return
 	}
 
-	if ! exists {
+	if !exists {
 		appG.Response(http.StatusOK, e.ERROR_NOT_EXIST_TAG, nil)
 		return
 	}
@@ -253,7 +253,7 @@ func DeleteArticle(c *gin.Context) {
 		return
 	}
 
-	if ! exists {
+	if !exists {
 		appG.Response(http.StatusOK, e.ERROR_NOT_EXIST_ARTICLE, nil)
 		return
 	}
@@ -270,6 +270,7 @@ func DeleteArticle(c *gin.Context) {
 const (
 	QRCODE_URL = "https://github.com/igbugs/goPractical"
 )
+
 func GenerateArticlePoster(c *gin.Context) {
 	appG := app.Gin{c}
 	qrc := qrcode.NewQrcode(QRCODE_URL, 300, 300, qr.M, qr.Auto)
@@ -297,7 +298,7 @@ func GenerateArticlePoster(c *gin.Context) {
 	}
 
 	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
-		"poster_url": qrcode.GetQrcodeFullUrl(posterName),
+		"poster_url":      qrcode.GetQrcodeFullUrl(posterName),
 		"poster_save_url": filePath + posterName,
 	})
 }

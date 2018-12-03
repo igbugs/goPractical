@@ -64,11 +64,9 @@ func testDefer() {
 		//return
 	}
 
-
 	fmt.Printf("read %d bytes sunccess! content:\n%s\n", n, string(buf[:]))
 	return
 }
-
 
 func main() {
 	//testCalc()

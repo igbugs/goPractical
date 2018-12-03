@@ -3,17 +3,17 @@ package main
 import (
 	"context"
 	"fmt"
-	"time"
 	"sync"
-	)
+	"time"
+)
 
-func worker(wg *sync.WaitGroup,ctx context.Context)  {
-	LOOP:
+func worker(wg *sync.WaitGroup, ctx context.Context) {
+LOOP:
 	for {
 		fmt.Println("worker")
 		time.Sleep(time.Second)
 		select {
-		case <- ctx.Done():
+		case <-ctx.Done():
 			break LOOP
 		default:
 		}

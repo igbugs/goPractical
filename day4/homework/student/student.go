@@ -1,21 +1,21 @@
 package student
 
 import (
-	"os"
-	"io/ioutil"
-	"encoding/json"
 	"bufio"
-	"fmt"
-	"strconv"
 	"day4/homework/util"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"strconv"
 )
 
 type Student struct {
-	Id int
-	Name string
-	Grade string
-	Sex string
-	CardId string
+	Id         int
+	Name       string
+	Grade      string
+	Sex        string
+	CardId     string
 	BorrowBook []string
 }
 
@@ -206,4 +206,3 @@ func QueryStudent(r *bufio.Reader) {
 		fmt.Printf("%#v\n", v)
 	}
 }
-

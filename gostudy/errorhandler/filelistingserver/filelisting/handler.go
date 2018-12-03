@@ -1,9 +1,9 @@
 package filelisting
 
 import (
+	"io/ioutil"
 	"net/http"
 	"os"
-	"io/ioutil"
 	"strings"
 )
 
@@ -29,15 +29,15 @@ func HandleFileList(writer http.ResponseWriter, request *http.Request) error {
 	// 例如: url 为 /list/fib.txt, 这行处理之后，才为真实的fib.txt 所在的路径
 	file, err := os.Open(path)
 	if err != nil {
-		return err       // 所有的错误的不在进行处理，有errWrapper 包装后统一的处理
+		return err // 所有的错误的不在进行处理，有errWrapper 包装后统一的处理
 	}
 	defer file.Close()
 
-	all, err := ioutil.ReadAll(file)  // 读取文件的内容
+	all, err := ioutil.ReadAll(file) // 读取文件的内容
 	if err != nil {
 		return err
 	}
 
-	writer.Write(all)		// 将读取的内容写回到 http.ResponseWriter中区
+	writer.Write(all) // 将读取的内容写回到 http.ResponseWriter中区
 	return nil
 }

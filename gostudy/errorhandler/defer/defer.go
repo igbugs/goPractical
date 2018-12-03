@@ -1,13 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"gostudy/functional/fib"
 	"os"
-	"bufio"
 )
 
-func tryDefer()  {
+func tryDefer() {
 	//defer fmt.Println(1)
 	//defer fmt.Println(2)
 	//fmt.Println(3)
@@ -49,7 +49,7 @@ func writeFile(filename string) {
 	}
 	defer file.Close()
 
-	writer := bufio.NewWriter(file)   // 先写入到buff中，之后通过flush 之后, 写入文件
+	writer := bufio.NewWriter(file) // 先写入到buff中，之后通过flush 之后, 写入文件
 	defer writer.Flush()
 
 	f := fib.Fibonacci()
@@ -57,7 +57,7 @@ func writeFile(filename string) {
 		fmt.Fprintln(writer, f())
 	}
 }
-func main()  {
+func main() {
 	//tryDefer()
 	writeFile("fib.txt")
 }

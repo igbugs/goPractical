@@ -1,10 +1,10 @@
 package main
 
 import (
-	"net/http"
-	"time"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"time"
 )
 
 func StatCost(c *gin.Context) {
@@ -18,7 +18,7 @@ func StatCost(c *gin.Context) {
 
 func handleUserInfo(c *gin.Context) {
 	fmt.Printf("request start process\n")
-	time.Sleep(3*time.Second)
+	time.Sleep(3 * time.Second)
 	c.JSON(http.StatusOK, "38333k333")
 }
 

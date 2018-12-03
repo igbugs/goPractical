@@ -1,12 +1,15 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
+	"logging"
 	"math/rand"
 	"time"
-	"fmt"
 )
 
-func main()  {
+
+func main() {
 	//a := make([]int, 0)
 	////a := []int{}
 	//for i := 0; i <= 100; i++ {
@@ -15,8 +18,17 @@ func main()  {
 	//}
 
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	for i:=0; i<10; i++ {
-		fmt.Println(r.Int())
+	//for i := 0; i < 10; i++ {
+	//	fmt.Println(r.Int())
+	//}
+
+	var msg = make(map[string]interface{}, 16)
+
+	m := []byte(`{"ip":"192.168.137.108","data":"ooooooooooooooooooooooo"}`)
+	err := json.Unmarshal(m, &msg)
+	if err != nil {
+		logging.Error("unmarshal failed, err:%v", err)
 	}
 
+	fmt.Println(msg["ip"])
 }

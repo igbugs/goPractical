@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
-	"log"
 	"time"
 )
 
@@ -27,7 +27,7 @@ func userInfo(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	//http.HandleFunc("/", sayhelloName)       //设置访问的路由, 如果以 / 开头，没有匹配到的 默认以 / 函数处理
-	http.HandleFunc("/index", sayhelloName)       //设置访问的路由
+	http.HandleFunc("/index", sayhelloName) //设置访问的路由
 	http.HandleFunc("/user/info", userInfo)
 	err := http.ListenAndServe(":9090", nil) //设置监听的端口
 	if err != nil {

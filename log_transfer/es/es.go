@@ -1,9 +1,9 @@
 package es
 
 import (
+	"context"
 	"github.com/olivere/elastic"
 	"logging"
-	"context"
 )
 
 type ESClient struct {

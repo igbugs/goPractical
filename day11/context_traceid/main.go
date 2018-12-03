@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"time"
 	"sync"
+	"time"
 )
 
-func worker(wg *sync.WaitGroup,ctx context.Context)  {
+func worker(wg *sync.WaitGroup, ctx context.Context) {
 	tracid, ok := ctx.Value("Trace_ID").(string)
 	if ok {
 		fmt.Printf("trace_id: %v\n", tracid)
@@ -18,7 +18,7 @@ LOOP:
 		fmt.Printf("worker: trace_id: %v\n", tracid)
 		time.Sleep(time.Second)
 		select {
-		case <- ctx.Done():
+		case <-ctx.Done():
 			break LOOP
 		default:
 		}

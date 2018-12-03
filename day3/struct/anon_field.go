@@ -3,12 +3,12 @@ package main
 import "fmt"
 
 type User struct {
-	Name string
-	Sex string
-	Age int
+	Name      string
+	Sex       string
+	Age       int
 	AvatarUrl string
-	int			// 匿名字段
-	string		// 匿名字段
+	int       // 匿名字段
+	string    // 匿名字段
 }
 
 func main() {

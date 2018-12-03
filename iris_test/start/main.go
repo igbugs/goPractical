@@ -6,7 +6,7 @@ import (
 	"github.com/kataras/iris/middleware/recover"
 )
 
-func main()  {
+func main() {
 	app := iris.New()
 	app.Use(recover.New())
 	app.Use(logger.New())

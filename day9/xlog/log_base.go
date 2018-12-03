@@ -1,10 +1,10 @@
 package xlog
 
 import (
-	"os"
 	"fmt"
-	"time"
+	"os"
 	"path/filepath"
+	"time"
 )
 
 type LogData struct {

@@ -1,15 +1,15 @@
 package downloader
 
 import (
+	"encoding/json"
 	"fmt"
-	"net/url"
 	"go_crawler/lagou_jobs/fake"
-	"net/http"
-	"strings"
-	"logging"
 	"go_crawler/lagou_jobs/pkg/uuid"
 	"io/ioutil"
-	"encoding/json"
+	"logging"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 var (

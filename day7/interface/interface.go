@@ -41,7 +41,7 @@ func (p *Pig) Run() {
 }
 
 func main() {
-	var a  Animal
+	var a Animal
 	var dog = &Dog{
 		name: "旺财",
 	}

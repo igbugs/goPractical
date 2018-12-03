@@ -1,13 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 )
 
 type Animal struct {
 	Name string
-	Age int
+	Age  int
 }
 
 func (a *Animal) SetName(name string) {
@@ -23,16 +23,16 @@ func (a *Animal) Print() {
 }
 
 type Birds struct {
-	*Animal		// 定义之后实例化的时候，要进行初始化
+	*Animal // 定义之后实例化的时候，要进行初始化
 }
 
 func (b *Birds) Fly() {
-	fmt.Printf("%s is Flying\n",b.Name)
+	fmt.Printf("%s is Flying\n", b.Name)
 }
 
 func main() {
 	var b *Birds = &Birds{
-		&Animal{},		// 定义之后实例化的时候，要进行初始化,要不然会对空指针进行操作
+		&Animal{}, // 定义之后实例化的时候，要进行初始化,要不然会对空指针进行操作
 	}
 
 	b.SetName("birds")

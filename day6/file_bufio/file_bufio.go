@@ -1,10 +1,10 @@
 package main
 
 import (
-	"os"
+	"bufio"
 	"fmt"
 	"io"
-	"bufio"
+	"os"
 )
 
 func main() {
@@ -34,7 +34,6 @@ func main() {
 		if err == io.EOF {
 			break
 		}
-
 
 	}
 }

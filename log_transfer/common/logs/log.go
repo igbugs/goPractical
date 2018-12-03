@@ -1,10 +1,10 @@
 package logs
 
 import (
-	"logging"
-	"path/filepath"
 	"fmt"
 	"log_transfer/common/config"
+	"logging"
+	"path/filepath"
 )
 
 func Init() (err error) {

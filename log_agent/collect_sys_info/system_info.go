@@ -1,18 +1,18 @@
 package collect_sys_info
 
 import (
-	"logging"
 	"encoding/json"
-	"log_agent/common/ip"
-	"log_agent/kafka"
-	"sync"
-	"time"
 	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/disk"
+	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/load"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
-	"github.com/shirou/gopsutil/disk"
-	"github.com/shirou/gopsutil/host"
+	"log_agent/common/ip"
+	"log_agent/kafka"
+	"logging"
+	"sync"
+	"time"
 )
 
 var sysInfoTopic string
@@ -33,7 +33,7 @@ type SystemInfo struct {
 
 type PartitionStat struct {
 	PartStat  disk.PartitionStat `json:"part_stat"`
-	PartUsage disk.UsageStat     `json:"part_usage"`
+	PartUsage *disk.UsageStat     `json:"part_usage"`
 }
 
 type DiskInfo struct {
@@ -42,16 +42,19 @@ type DiskInfo struct {
 }
 
 func collectDisk() {
-	var diskInfo DiskInfo
-	diskInfo.DiskIO = make(map[string]disk.IOCountersStat)
+	var diskInfo = DiskInfo{
+		Partitions: make([]PartitionStat,0),
+		DiskIO: make(map[string]disk.IOCountersStat),
+	}
+	//diskInfo.DiskIO = make(map[string]disk.IOCountersStat)
 
 	part, _ := disk.Partitions(true)
 	for _, p := range part {
 		var ps PartitionStat
 		ps.PartStat = p
 
-		dInfo, _ := disk.Usage(p.Device)
-		ps.PartUsage = *dInfo
+		dInfo, _ := disk.Usage(p.Mountpoint)
+		ps.PartUsage = dInfo
 
 		diskInfo.Partitions = append(diskInfo.Partitions, ps)
 	}

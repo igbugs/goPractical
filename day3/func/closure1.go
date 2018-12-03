@@ -1,13 +1,13 @@
 package main
 
 import (
-	"strings"
 	"fmt"
+	"strings"
 )
 
 func makeSuffixFunc(suffix string) func(string) string {
 	return func(name string) string {
-		if !strings.HasSuffix(name, suffix) {	// 判断是否已 suffix 结尾，不是则 把suffix 加上
+		if !strings.HasSuffix(name, suffix) { // 判断是否已 suffix 结尾，不是则 把suffix 加上
 			return name + suffix
 		}
 		return name

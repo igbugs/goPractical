@@ -1,4 +1,4 @@
-package conf
+package config
 
 import (
 	"github.com/go-ini/ini"
@@ -41,14 +41,15 @@ var (
 func mapTo(section string, v interface{}) {
 	err := cfg.Section(section).MapTo(v)
 	if err != nil {
-		logging.Fatal("cfg.MapTo Setting %v , err: %v", v, err)
+		logging.Fatal("cfg.MapTo Setting %v, err: %v", v, err)
 	}
 }
 
 func Init() (err error) {
-	cfg, err = ini.Load("conf/conf.ini")
+	cfg, err = ini.Load("config/config.ini")
+	//cfg, err = ini.Load("/home/xyb/work/src/log_agent/config/config.ini")
 	if err != nil {
-		logging.Fatal("Fail to parse 'conf/conf.ini'; %v", err)
+		logging.Fatal("Fail to parse 'config/config.ini'; %v", err)
 		return
 	}
 

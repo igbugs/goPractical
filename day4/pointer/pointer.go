@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func testPointer1()  {
+func testPointer1() {
 	var a *int
 	var b int = 200
 
@@ -13,7 +13,7 @@ func testPointer1()  {
 
 }
 
-func testPointer2()  {
+func testPointer2() {
 	var a *int
 	var b int = 200
 
@@ -29,7 +29,7 @@ func testPointer2()  {
 
 }
 
-func testPointer3()  {
+func testPointer3() {
 	var a *int
 	var b int = 200
 

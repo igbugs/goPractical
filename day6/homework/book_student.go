@@ -1,14 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"database/sql"
+	"fmt"
 )
 
 type BookStu struct {
-	Id string			`db:"id"`
-	BookId string		`db:"book_id"`
-	StudentId string	`db:"student_id"`
+	Id        string `db:"id"`
+	BookId    string `db:"book_id"`
+	StudentId string `db:"student_id"`
 }
 
 func (bs BookStu) QueryBybid(id string, db *sql.DB) []Student {

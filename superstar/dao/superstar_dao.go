@@ -2,8 +2,8 @@ package dao
 
 import (
 	"github.com/go-xorm/xorm"
-	"superstar/models"
 	"github.com/gpmgo/gopm/modules/log"
+	"superstar/models"
 )
 
 type SuperstarDao struct {

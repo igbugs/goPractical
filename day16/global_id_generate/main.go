@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/sony/sonyflake"
 	"fmt"
+	"github.com/sony/sonyflake"
 	"time"
 )
 

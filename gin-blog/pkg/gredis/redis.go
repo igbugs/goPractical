@@ -1,18 +1,18 @@
 package gredis
 
 import (
-	"github.com/garyburd/redigo/redis"
 	"gin-blog/pkg/setting"
-	"time"
+	"github.com/garyburd/redigo/redis"
 	"github.com/gin-gonic/gin/json"
-		)
+	"time"
+)
 
 var RedisConn *redis.Pool
 
 func Setup() error {
 	RedisConn = &redis.Pool{
-		MaxIdle: setting.RedisSetting.MaxIdle,
-		MaxActive: setting.RedisSetting.MaxActive,
+		MaxIdle:     setting.RedisSetting.MaxIdle,
+		MaxActive:   setting.RedisSetting.MaxActive,
 		IdleTimeout: setting.RedisSetting.IdleTimeout,
 		Dial: func() (redis.Conn, error) {
 			c, err := redis.Dial("tcp_chat", setting.RedisSetting.Host)

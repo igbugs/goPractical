@@ -1,12 +1,12 @@
 package main
 
 import (
-	"day4/homework/util"
 	"bufio"
-	"os"
-	"fmt"
 	"day4/homework/book"
 	"day4/homework/student"
+	"day4/homework/util"
+	"fmt"
+	"os"
 	"strconv"
 )
 

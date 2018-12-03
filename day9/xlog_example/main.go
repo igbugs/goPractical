@@ -1,6 +1,5 @@
 package xlog_example
 
-
 import (
 	"day9/xlog"
 	"flag"
@@ -26,7 +25,7 @@ func main() {
 	//testGetLine()
 
 	var logTypeStr string
-	flag.StringVar(&logTypeStr, "type", "console",  "please input logger type")
+	flag.StringVar(&logTypeStr, "type", "console", "please input logger type")
 	flag.Parse()
 
 	var logType int

@@ -1,17 +1,17 @@
 package routers
 
 import (
-	"github.com/gin-gonic/gin"
-	"gin-blog/pkg/setting"
-	"gin-blog/routers/api/v1"
-	"gin-blog/routers/api"
 	"gin-blog/middleware/jwt"
+	"gin-blog/pkg/export"
+	"gin-blog/pkg/qrcode"
+	"gin-blog/pkg/setting"
+	"gin-blog/pkg/upload"
+	"gin-blog/routers/api"
+	"gin-blog/routers/api/v1"
+	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"net/http"
-	"gin-blog/pkg/upload"
-	"gin-blog/pkg/export"
-	"gin-blog/pkg/qrcode"
 )
 
 func InitRouter() *gin.Engine {

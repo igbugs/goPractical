@@ -1,9 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"gostudy/retriever/mock"
 	"gostudy/retriever/realcase"
-	"fmt"
 	"time"
 )
 
@@ -25,8 +25,8 @@ func download(r Retriever) string {
 
 func post(poster Poster) {
 	poster.Post(url,
-		map[string]string {
-			"name": "igbugs",
+		map[string]string{
+			"name":   "igbugs",
 			"course": "goland",
 		})
 }
@@ -37,7 +37,7 @@ type RetrieverPoster interface {
 }
 
 func session(s RetrieverPoster) string {
-	s.Post(url, map[string]string {
+	s.Post(url, map[string]string{
 		"contents": "another faked baidu.com.",
 	})
 	return s.Get(url)
@@ -57,7 +57,6 @@ func inspect(r Retriever) {
 	fmt.Println()
 }
 
-
 func main() {
 	var r Retriever
 
@@ -67,7 +66,7 @@ func main() {
 
 	r = &realcase.Retriever{
 		UserAgent: "Mozilla/5.0",
-		TimeOut: time.Minute,
+		TimeOut:   time.Minute,
 	}
 	inspect(r)
 

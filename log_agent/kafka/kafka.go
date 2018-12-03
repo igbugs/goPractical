@@ -1,9 +1,9 @@
 package kafka
 
 import (
+	"fmt"
 	"github.com/Shopify/sarama"
 	"logging"
-	"fmt"
 )
 
 type Message struct {

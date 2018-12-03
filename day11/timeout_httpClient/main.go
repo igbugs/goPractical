@@ -1,17 +1,17 @@
 package main
 
 import (
-	"net/http"
 	"context"
-	"time"
 	"fmt"
-		"sync"
-		"io/ioutil"
+	"io/ioutil"
+	"net/http"
+	"sync"
+	"time"
 )
 
 type RespData struct {
 	resp *http.Response
-	err error
+	err  error
 }
 
 func doCall(ctx context.Context) {
@@ -35,7 +35,7 @@ func doCall(ctx context.Context) {
 		fmt.Printf("client.Do resp: %v, err: %v\n", resp, err)
 		respData := &RespData{
 			resp: resp,
-			err: err,
+			err:  err,
 		}
 
 		respChan <- respData
@@ -43,11 +43,11 @@ func doCall(ctx context.Context) {
 	}()
 
 	select {
-	case <- ctx.Done():
+	case <-ctx.Done():
 		// 超时的时候，此分支会有空的结构体 传入，标识任务结束
-		tr.CancelRequest(req)	// 取消请求
+		tr.CancelRequest(req) // 取消请求
 		fmt.Printf("call api timeout\n")
-	case result := <- respChan:
+	case result := <-respChan:
 		fmt.Printf("call server api succ\n")
 		if result.err != nil {
 			fmt.Printf("call api failed, err: %v\n", err)
@@ -61,7 +61,7 @@ func doCall(ctx context.Context) {
 }
 
 func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Microsecond * 10000)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Microsecond*10000)
 	defer cancel()
 	doCall(ctx)
 }

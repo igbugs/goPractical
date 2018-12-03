@@ -16,7 +16,7 @@ type KafkaConf struct {
 type ESConf struct {
 	Addr      string `ini:"addr"`
 	Index     string `ini:"index"`
-	ThreadNum int `ini:"thread_num"`
+	ThreadNum int    `ini:"thread_num"`
 	QueueSize int    `ini:"queue_size"`
 }
 
@@ -27,12 +27,11 @@ type LogConf struct {
 	Module   string `ini:"module"`
 }
 
-
 var (
-	cfg *ini.File
+	cfg          *ini.File
 	LogSetting   = &LogConf{}
 	KafkaSetting = &KafkaConf{}
-	ESSetting  = &ESConf{}
+	ESSetting    = &ESConf{}
 )
 
 func mapTo(section string, v interface{}) {
@@ -43,9 +42,9 @@ func mapTo(section string, v interface{}) {
 }
 
 func Init() (err error) {
-	cfg, err = ini.Load("conf/conf.ini")
+	cfg, err = ini.Load("config/config.ini")
 	if err != nil {
-		logging.Fatal("Fail to parse 'conf/conf.ini'; %v", err)
+		logging.Fatal("Fail to parse 'config/config.ini'; %v", err)
 		return
 	}
 

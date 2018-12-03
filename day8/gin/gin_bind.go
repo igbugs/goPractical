@@ -7,9 +7,9 @@ import (
 
 type UserInfo1 struct {
 	UserName string `form:"username" json:"username"`
-	Passwd string `form:"passwd" json:"passwd"`
-	Age int `form:"age" json:"age"`
-	Sex string `form:"sex" json:"sex"`
+	Passwd   string `form:"passwd" json:"passwd"`
+	Age      int    `form:"age" json:"age"`
+	Sex      string `form:"sex" json:"sex"`
 }
 
 func handleUserInfo1(c *gin.Context) {

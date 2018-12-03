@@ -5,6 +5,4 @@ type Manager interface {
 	Delete()
 	Modify()
 	Query()
-
 }
-

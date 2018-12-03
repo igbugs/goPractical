@@ -1,9 +1,9 @@
 package services
 
 import (
-	"superstar/models"
 	"superstar/dao"
 	"superstar/datasource"
+	"superstar/models"
 )
 
 type SuperstarService interface {

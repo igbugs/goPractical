@@ -1,11 +1,11 @@
 package model
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"fmt"
-	"logging"
 	"go_crawler/car_prices/spiders"
+	"logging"
 )
 
 var (
@@ -31,7 +31,7 @@ func init() {
 	}
 }
 
-func AddCars(cars []spiders.QcCar)  {
+func AddCars(cars []spiders.QcCar) {
 	for index, car := range cars {
 		if err := DB.Create(&car).Error; err != nil {
 			logging.Error("db.Create index: %d, err: %v", index, err)

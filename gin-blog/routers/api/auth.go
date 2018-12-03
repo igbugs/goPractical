@@ -1,19 +1,19 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/astaxie/beego/validation"
-	"gin-blog/pkg/e"
-	"gin-blog/models"
-	"gin-blog/pkg/util"
-	"net/http"
 	"fmt"
+	"gin-blog/models"
+	"gin-blog/pkg/e"
 	"gin-blog/pkg/logging"
+	"gin-blog/pkg/util"
+	"github.com/astaxie/beego/validation"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type auth struct {
-	Username string		`valid:"Required; MaxSize(50)"`
-	Password string		`valid:"Required; MaxSize(50)"`
+	Username string `valid:"Required; MaxSize(50)"`
+	Password string `valid:"Required; MaxSize(50)"`
 }
 
 func GetAuth(c *gin.Context) {
@@ -49,9 +49,8 @@ func GetAuth(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
-		"msg": e.GetMsg(code),
+		"msg":  e.GetMsg(code),
 		"data": data,
 	})
 
 }
-

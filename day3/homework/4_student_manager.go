@@ -1,15 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"flag"
 	"bufio"
-	"os"
-	"strings"
-	"errors"
-	"strconv"
 	"encoding/json"
+	"errors"
+	"flag"
+	"fmt"
 	"io/ioutil"
+	"os"
+	"strconv"
+	"strings"
 )
 
 type Student struct {

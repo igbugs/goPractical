@@ -1,14 +1,14 @@
 package main
 
 import (
-	"reflect"
 	"fmt"
+	"reflect"
 )
 
 type User struct {
-	Name string	`json:"name"`
-	Age int		`json:"age"`
-	Sex string
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+	Sex  string
 }
 
 func marshal(data interface{}) (jsonStr string) {
@@ -36,7 +36,7 @@ func marshal(data interface{}) (jsonStr string) {
 				jsonStr += fmt.Sprintf("\"%s\":%v", name, vFieldValue)
 			}
 
-			if i != numField - 1 {
+			if i != numField-1 {
 				jsonStr += ","
 			}
 		}
@@ -48,8 +48,8 @@ func marshal(data interface{}) (jsonStr string) {
 func main() {
 	var user = User{
 		Name: "xyb",
-		Age: 12,
-		Sex: "M",
+		Age:  12,
+		Sex:  "M",
 	}
 
 	jsonStr := marshal(user)

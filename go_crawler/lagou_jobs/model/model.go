@@ -1,11 +1,11 @@
 package model
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"fmt"
 	"logging"
-	)
+)
 
 var (
 	DB *gorm.DB
@@ -30,4 +30,3 @@ func init() {
 		return "sp_" + defaultTableName
 	}
 }
-

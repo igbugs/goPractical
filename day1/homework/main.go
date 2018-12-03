@@ -6,10 +6,9 @@ import (
 )
 
 type student struct {
-	id int
+	id   int
 	name string
 }
-
 
 func main() {
 	var s string = "hello GO"

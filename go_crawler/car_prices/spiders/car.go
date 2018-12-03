@@ -1,11 +1,11 @@
 package spiders
 
 import (
-	"regexp"
 	"encoding/json"
 	"github.com/PuerkitoBio/goquery"
-	"strconv"
 	"logging"
+	"regexp"
+	"strconv"
 	"strings"
 )
 

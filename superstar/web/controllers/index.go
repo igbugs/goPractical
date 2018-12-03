@@ -2,11 +2,11 @@ package controllers
 
 import (
 	"github.com/kataras/iris"
-	"superstar/services"
 	"github.com/kataras/iris/mvc"
+	"log"
 	"superstar/datasource"
 	"superstar/models"
-	"log"
+	"superstar/services"
 )
 
 type IndexController struct {

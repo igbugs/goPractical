@@ -1,18 +1,17 @@
 package logging
 
 import (
-	"os"
 	"fmt"
-	"time"
-	"runtime"
+	"os"
 	"path/filepath"
-	)
+	"runtime"
+	"time"
+)
 
 type LogBase struct {
-	level int
+	level  int
 	module string
 }
-
 
 func (l *LogBase) writeLog(file *os.File, ld *LogData) (err error) {
 	_, err = fmt.Fprintf(file, "[%s] [%s] [%s] [%s:%s:%d] %s\n",
@@ -32,7 +31,7 @@ func (l *LogBase) formatLog(level int, module string, format string, args ...int
 	fileName = filepath.Base(fileName)
 	data := fmt.Sprintf(format, args...)
 
-	return &LogData {
+	return &LogData{
 		timeStr:  timeStr,
 		levelStr: levelStr,
 		module:   module,
@@ -63,7 +62,6 @@ func getFuncInfo(skip int) (fileName, funcName string, lineNo int) {
 	lineNo = line
 	return
 }
-
 
 func CheckNotExist(src string) bool {
 	_, err := os.Stat(src)

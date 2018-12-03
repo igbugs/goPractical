@@ -1,12 +1,12 @@
 package datasource
 
 import (
-	"github.com/go-xorm/xorm"
-	"sync"
-	"superstar/conf"
 	"fmt"
-	"github.com/gpmgo/gopm/modules/log"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-xorm/xorm"
+	"github.com/gpmgo/gopm/modules/log"
+	"superstar/conf"
+	"sync"
 )
 
 var (

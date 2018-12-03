@@ -3,15 +3,15 @@ package cache_service
 import (
 	"gin-blog/pkg/e"
 	"strconv"
-		"strings"
+	"strings"
 )
 
 type Article struct {
-	ID int
+	ID    int
 	TagID int
 	State int
 
-	PageNum int
+	PageNum  int
 	PageSize int
 }
 

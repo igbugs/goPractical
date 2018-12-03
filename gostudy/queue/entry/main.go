@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gostudy/queue"
 	"fmt"
+	"gostudy/queue"
 )
 
 func main() {

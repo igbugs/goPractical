@@ -1,9 +1,9 @@
 package _switch
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
-	"fmt"
 )
 
 func main() {

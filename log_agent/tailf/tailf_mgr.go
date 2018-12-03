@@ -1,15 +1,15 @@
 package tailf
 
 import (
-	config "log_agent/common/conf"
+	config "log_agent/common/config"
 	"logging"
 	"sync"
 )
 
 type TailTaskMgr struct {
-	tailTaskMap map[string]*TailTask
+	tailTaskMap    map[string]*TailTask
 	collectLogList []*config.MsgLogConf
-	etcdChan <-chan []*config.MsgLogConf
+	etcdChan       <-chan []*config.MsgLogConf
 }
 
 var (
@@ -19,19 +19,19 @@ var (
 func Init(collectLogList []*config.MsgLogConf, etcdCh <-chan []*config.MsgLogConf) (err error) {
 	tailTaskMgr = &TailTaskMgr{
 		collectLogList: collectLogList,
-		etcdChan: etcdCh,
-		tailTaskMap: make(map[string]*TailTask),
+		etcdChan:       etcdCh,
+		tailTaskMap:    make(map[string]*TailTask),
 	}
 
 	for _, conf := range collectLogList {
 		if tailTaskMgr.exist(conf) {
-			logging.Debug("init tail task failed, conf:%#v, duplicate config", conf)
+			logging.Debug("init tail task failed, config:%#v, duplicate config", conf)
 			continue
 		}
 
 		tailTask, err := NewTailTask(conf.Path, conf.ModuleName, conf.Topic)
 		if err != nil {
-			logging.Error("init tail task failed, conf:%#v, err:%#v", conf, err)
+			logging.Error("init tail task failed, config:%#v, err:%#v", conf, err)
 			continue
 		}
 
@@ -61,22 +61,22 @@ func (t *TailTaskMgr) listTask() {
 func (t *TailTaskMgr) run() {
 	for {
 		t.listTask()
-		tmpCollectLogList := <- t.etcdChan
+		tmpCollectLogList := <-t.etcdChan
 		logging.Debug("the etcd config have changed, new collectLogList:%#v", tmpCollectLogList)
 
 		// 判断是否有新增的日志收集配置
 		for _, conf := range tmpCollectLogList {
 			// 如果对应的日志收集配置，已经存在。那么不需要做任何事情
 			if t.exist(conf) {
-				logging.Debug("the tail log task of conf:%#v already running", conf)
+				logging.Debug("the tail log task of config:%#v already running", conf)
 				continue
 			}
 
-			logging.Debug("new tail log task of conf:%#v is running", conf)
+			logging.Debug("new tail log task of config:%#v is running", conf)
 			// 不存在则实例化新的日志收集任务配置
 			tailTask, err := NewTailTask(conf.Path, conf.ModuleName, conf.Topic)
 			if err != nil {
-				logging.Error("init tail task failed, conf:%#v", conf, err)
+				logging.Error("init tail task failed, config:%#v", conf, err)
 				continue
 			}
 
@@ -91,8 +91,8 @@ func (t *TailTaskMgr) run() {
 				if task.Path == conf.Path &&
 					task.ModuleName == conf.ModuleName &&
 					task.Topic == conf.Topic {
-						found = true
-						break
+					found = true
+					break
 				}
 			}
 
@@ -105,7 +105,7 @@ func (t *TailTaskMgr) run() {
 	}
 }
 
-func Run(wg *sync.WaitGroup)  {
+func Run(wg *sync.WaitGroup) {
 	tailTaskMgr.run()
 	wg.Done()
 }

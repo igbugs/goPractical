@@ -67,7 +67,6 @@ func insertDb(db *sql.DB) {
 	age := 100
 	id := 100
 
-
 	result, err := db.Exec("insert into user(id, name, age) value(?,?,?)", id, username, age)
 	if err != nil {
 		fmt.Printf("exec failed! err: %v\n", err)
@@ -234,7 +233,7 @@ func main() {
 		return
 	}
 
-	err = db.Ping()		// 防止 账户密码出错，进行检查
+	err = db.Ping() // 防止 账户密码出错，进行检查
 	if err != nil {
 		fmt.Printf("ping mysql failed, err: %v\n", err)
 		return

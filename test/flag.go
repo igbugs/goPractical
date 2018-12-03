@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"time"
 	"fmt"
+	"time"
 )
 
 var period = flag.Duration("period", 1*time.Second, "sleep period")

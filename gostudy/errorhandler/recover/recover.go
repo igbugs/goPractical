@@ -18,7 +18,7 @@ func tryRecover() {
 	//a := 5 / b
 	//fmt.Println(a)
 
-	panic(123)   // 直接panic(123), 然后让recover进行处理，recover 会在进行panic
+	panic(123) // 直接panic(123), 然后让recover进行处理，recover 会在进行panic
 }
 
 func main() {

@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/Shopify/sarama"
-	"os"
 	"log"
+	"os"
 )
 
 func main() {

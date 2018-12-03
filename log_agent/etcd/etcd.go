@@ -1,20 +1,20 @@
 package etcd
 
 import (
-	"go.etcd.io/etcd/clientv3"
-	"log_agent/common/conf"
-	"time"
-	"logging"
 	"context"
 	"encoding/json"
 	"fmt"
+	"go.etcd.io/etcd/clientv3"
+	"log_agent/common/config"
+	"logging"
+	"time"
 )
 
 type EtcdClient struct {
 	client   *clientv3.Client
 	address  []string
 	watchKey string
-	dataChan chan []*conf.MsgLogConf
+	dataChan chan []*config.MsgLogConf
 }
 
 var (
@@ -25,7 +25,7 @@ func Init(address []string, watchKey string) (err error) {
 	etcdClient = &EtcdClient{
 		address:  address,
 		watchKey: watchKey,
-		dataChan: make(chan []*conf.MsgLogConf),
+		dataChan: make(chan []*config.MsgLogConf),
 	}
 
 	etcdClient.client, err = clientv3.New(clientv3.Config{
@@ -56,7 +56,7 @@ func (ec *EtcdClient) watch() {
 
 			for _, event := range v.Events {
 				logging.Debug("eventType:%v key:%s value:%s", event.Type, event.Kv.Key, string(event.Kv.Value))
-				var conf []*conf.MsgLogConf
+				var conf []*config.MsgLogConf
 				if event.Type == clientv3.EventTypeDelete {
 					// 此时的conf 是空值
 					ec.dataChan <- conf
@@ -75,11 +75,11 @@ func (ec *EtcdClient) watch() {
 	}
 }
 
-func Watch() <-chan []*conf.MsgLogConf {
+func Watch() <-chan []*config.MsgLogConf {
 	return etcdClient.dataChan
 }
 
-func GetConfig(key string) (conf []*conf.MsgLogConf, err error) {
+func GetConfig(key string) (conf []*config.MsgLogConf, err error) {
 	resp, err := etcdClient.client.Get(context.Background(), key)
 	if err != nil {
 		logging.Error("get key:%v from etcd failed, err:%v", key, err)
@@ -100,11 +100,11 @@ func GetConfig(key string) (conf []*conf.MsgLogConf, err error) {
 		return
 	}
 
-	logging.Debug("get config from etcd success, conf: %#v", conf)
+	logging.Debug("get config from etcd success, config: %#v", conf)
 	return
 }
 
-func GetSystemInfoConfig(key string) (conf *conf.MsgSystemConf, err error) {
+func GetSystemInfoConfig(key string) (conf *config.MsgSystemConf, err error) {
 	resp, err := etcdClient.client.Get(context.Background(), key)
 	if err != nil {
 		logging.Error("get key: %v from etcd failed, err: %v", key, err)
@@ -126,7 +126,7 @@ func GetSystemInfoConfig(key string) (conf *conf.MsgSystemConf, err error) {
 		return
 	}
 
-	logging.Debug("get config from etcd success, conf: %#v", conf)
+	logging.Debug("get config from etcd success, config: %#v", conf)
 	return
 
 }

@@ -5,8 +5,8 @@ import (
 	"net/http"
 )
 
-func handleHtml(c *gin.Context)  {
-	c.HTML(http.StatusOK, "post","hahaha")
+func handleHtml(c *gin.Context) {
+	c.HTML(http.StatusOK, "post", "hahaha")
 }
 
 func main() {

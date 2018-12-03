@@ -1,9 +1,9 @@
 package pipeline
 
 import (
-	"net"
 	"bufio"
-	)
+	"net"
+)
 
 func NetWorkerSink(addr string, in <-chan int) {
 	// 启动了一个 tcp 的server 接收来源网络的数据请求，把数据发送到远端

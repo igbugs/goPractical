@@ -42,7 +42,6 @@ func main() {
 	//
 	//}
 
-
 	switch num := number(15, 5); {
 	case num > 0 && num <= 50:
 		fmt.Println("num is > 0 and < 50")

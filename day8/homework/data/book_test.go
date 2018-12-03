@@ -4,7 +4,7 @@ import (
 	"day8/homework/models"
 	"testing"
 	"time"
-	)
+)
 
 func init() {
 	dns := "root:123456@tcp(192.168.247.133:3306)/library_mgr?parseTime=True"
@@ -58,11 +58,11 @@ func TestInsertBook(t *testing.T) {
 
 func TestUpdateBook(t *testing.T) {
 	var book = models.Book{
-		Author: "jim",
-		BookId: "83883488344",
-		BookName: "C语言从入门到放弃",
+		Author:      "jim",
+		BookId:      "83883488344",
+		BookName:    "C语言从入门到放弃",
 		PublishTime: time.Now(),
-		StockNum: 10,
+		StockNum:    10,
 	}
 
 	err := UpdateBook(&book)
@@ -73,7 +73,6 @@ func TestUpdateBook(t *testing.T) {
 
 	t.Logf("update book succ")
 }
-
 
 func TestQueryBook(t *testing.T) {
 	var book *models.Book

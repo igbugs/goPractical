@@ -1,8 +1,8 @@
 package main
 
 import (
-	"tree"
 	"fmt"
+	"gostudy/tree"
 )
 
 type myTreeNode struct {

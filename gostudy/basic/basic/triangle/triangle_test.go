@@ -2,8 +2,8 @@ package triangle
 
 import "testing"
 
-func TestTriangle(t *testing.T)  {
-	tests := []struct{a, b, c int}{
+func TestTriangle(t *testing.T) {
+	tests := []struct{ a, b, c int }{
 		{3, 4, 5},
 		{5, 12, 13},
 		{8, 15, 17},

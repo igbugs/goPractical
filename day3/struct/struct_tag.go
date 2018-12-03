@@ -1,15 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 )
 
 type User struct {
-	Name string	`json:"name"`
-	Sex string	`json:"sex"`
-	Age int		`json:"age"`
-	AvatarUrl string	`json:"avatar_url"`
+	Name      string `json:"name"`
+	Sex       string `json:"sex"`
+	Age       int    `json:"age"`
+	AvatarUrl string `json:"avatar_url"`
 }
 
 func main() {

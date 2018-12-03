@@ -3,9 +3,9 @@ package parse
 import (
 	"github.com/PuerkitoBio/goquery"
 	"logging"
+	"regexp"
 	"strconv"
 	"strings"
-	"regexp"
 )
 
 type DoubanMovie struct {
@@ -61,16 +61,16 @@ func ParseMovies(doc *goquery.Document) (movies []DoubanMovie) {
 			title := s.Find(".hd a span").Eq(0).Text()
 
 			subtitle := s.Find(".hd a span").Eq(1).Text()
-			logging.Debug("before subtitle:%q",subtitle, subtitle)
+			logging.Debug("before subtitle:%q", subtitle, subtitle)
 			subtitle = strings.Replace(subtitle, "\u00A0", "", -1)
 			subtitle = strings.TrimLeft(subtitle, "/ ")
-			logging.Debug("after subtitle:%q",subtitle, subtitle)
+			logging.Debug("after subtitle:%q", subtitle, subtitle)
 
 			other := s.Find(".hd a span").Eq(2).Text()
-			logging.Debug("before other:%q %T",other, other)
+			logging.Debug("before other:%q %T", other, other)
 			other = strings.Replace(other, "\u00A0", "", -1)
 			other = strings.TrimLeft(other, "/ ")
-			logging.Debug("after other:%q %T",other, other)
+			logging.Debug("after other:%q %T", other, other)
 
 			desc := strings.TrimSpace(s.Find(".bd p").Eq(0).Text())
 			descInfo := strings.Split(desc, "\n")

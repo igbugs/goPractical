@@ -11,8 +11,8 @@ import (
 
 	"github.com/nfnt/resize"
 	"path/filepath"
-	"sync"
 	"strings"
+	"sync"
 )
 
 const DEFAULT_MAX_WIDTH float64 = 64
@@ -82,10 +82,9 @@ func getFilelist(path string) {
 }
 
 var (
-	wg sync.WaitGroup
+	wg       sync.WaitGroup
 	imagChan = make(chan string, 100)
 )
-
 
 func main() {
 	wg.Add(1)
@@ -95,7 +94,7 @@ func main() {
 		saveFile := strings.Split(imageFile, ".")[0] + "_thumb.png"
 		wg.Add(1)
 
-		go func(origin , resize string) {
+		go func(origin, resize string) {
 			defer wg.Done()
 			err := makeThumbnail(origin, resize)
 			if err != nil {
@@ -109,4 +108,3 @@ func main() {
 
 	wg.Wait()
 }
-

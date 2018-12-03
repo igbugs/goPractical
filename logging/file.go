@@ -1,32 +1,32 @@
 package logging
 
 import (
+	"fmt"
 	"os"
+	"strings"
 	"sync"
 	"time"
-	"fmt"
-	"strings"
 )
 
 type File struct {
 	*LogBase
 	filename string
-	file *os.File
+	file     *os.File
 
-	logChan chan *LogData
-	wg *sync.WaitGroup
+	logChan  chan *LogData
+	wg       *sync.WaitGroup
 	currHour int
 }
 
 func NewFile(level int, filename string, module string) Logger {
 	logger := &File{
 		LogBase: &LogBase{
-			level: level,
+			level:  level,
 			module: module,
 		},
 		filename: filename,
-		logChan: make(chan *LogData, 10000),
-		wg: &sync.WaitGroup{},
+		logChan:  make(chan *LogData, 10000),
+		wg:       &sync.WaitGroup{},
 		currHour: time.Now().Hour(),
 	}
 

@@ -3,8 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 func ReadInput(r *bufio.Reader) string {

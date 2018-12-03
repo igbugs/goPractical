@@ -7,13 +7,13 @@ const (
 )
 
 type LogData struct {
-	timeStr string
+	timeStr  string
 	levelStr string
-	module	string
+	module   string
 	fileName string
 	funcName string
-	lineNo	int
-	data string
+	lineNo   int
+	data     string
 }
 
 var logger Logger = newLogger(LogTypeConsole, LogLevelDebug, "", "default")
@@ -80,4 +80,3 @@ func Close() {
 //func SetLevel(level int) {
 //	logger.SetLevel(level)
 //}
-

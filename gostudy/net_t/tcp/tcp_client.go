@@ -1,9 +1,9 @@
 package main
 
 import (
-	"os"
 	"fmt"
 	"net"
+	"os"
 )
 
 func checkError(err error) {

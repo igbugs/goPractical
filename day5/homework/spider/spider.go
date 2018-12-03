@@ -2,16 +2,16 @@ package main
 
 import (
 	"bytes"
-	"log"
-	"strconv"
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/satori/go.uuid"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
-	"github.com/satori/go.uuid"
 	"runtime"
-	"fmt"
+	"strconv"
 	"sync"
 )
 
@@ -74,7 +74,7 @@ func pathExists(path string) (bool, error) {
 
 var (
 	saveImagePath = "./day5OriginImage"
-	wg sync.WaitGroup
+	wg            sync.WaitGroup
 )
 
 func main() {
@@ -85,7 +85,7 @@ func main() {
 	urls := getAllUrls()
 	for _, url := range urls {
 		parseHtml(url)
-		fmt.Printf("当前goroutine 数量: %d\n",runtime.NumGoroutine())
+		fmt.Printf("当前goroutine 数量: %d\n", runtime.NumGoroutine())
 	}
 
 	wg.Wait()

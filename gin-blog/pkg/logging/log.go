@@ -1,12 +1,12 @@
 package logging
 
 import (
-	"os"
-	"log"
-	"runtime"
 	"fmt"
-	"path/filepath"
 	"gin-blog/pkg/file"
+	"log"
+	"os"
+	"path/filepath"
+	"runtime"
 )
 
 type Level int
@@ -14,11 +14,11 @@ type Level int
 var (
 	F *os.File
 
-	DefaultPrefix = ""
+	DefaultPrefix      = ""
 	DefaultCallerDepth = 2
 
-	logger *log.Logger
-	logPrefix = ""
+	logger     *log.Logger
+	logPrefix  = ""
 	levelFlags = []string{"DEBUG", "INFO", "WARN", "FATAL"}
 )
 
@@ -61,7 +61,7 @@ func Error(v ...interface{}) {
 	logger.Println(v)
 }
 
-func Fatal(v ...interface{})  {
+func Fatal(v ...interface{}) {
 	setPrefix(FATAL)
 	logger.Println(v)
 }

@@ -9,11 +9,11 @@ import (
 func main() {
 	filename := "./my.log"
 	tails, err := tail.TailFile(filename, tail.Config{
-		ReOpen: true,
-		Follow: true,
-		Location: &tail.SeekInfo{Offset: 0, Whence: 2},
+		ReOpen:    true,
+		Follow:    true,
+		Location:  &tail.SeekInfo{Offset: 0, Whence: 2},
 		MustExist: false,
-		Poll: true,
+		Poll:      true,
 	})
 	if err != nil {
 		fmt.Println("tail file err:", err)

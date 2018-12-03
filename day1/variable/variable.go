@@ -14,10 +14,9 @@ var (
 	aa int
 	bb string
 	cc bool
-	dd int = 88
+	dd int    = 88
 	ee string = "hello world"
 )
-
 
 const (
 	a1 = 3 + iota
@@ -26,10 +25,9 @@ const (
 	d1
 )
 
-
 var aaaa = 124325
 
-func main()  {
+func main() {
 	aaa := 123
 	bbb := "hahaha"
 	ccc := true

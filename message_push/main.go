@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net/http"
 	"github.com/gorilla/websocket"
+	"net/http"
 )
 
 var (
@@ -32,11 +32,11 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 			goto ERR
 		}
 	}
-	ERR:
-		conn.Close()
+ERR:
+	conn.Close()
 }
 
-func main()  {
+func main() {
 	// http://localhost:7777/ws
 	http.HandleFunc("/ws", wsHandler)
 

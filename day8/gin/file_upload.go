@@ -1,9 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"fmt"
 )
 
 //type Result struct {
@@ -58,7 +58,6 @@ func main() {
 	r := gin.Default()
 	r.POST("/file/upload", handleFileUpload)
 	r.POST("/files/upload", handleMultiFileUpload)
-
 
 	r.Run(":9090")
 }

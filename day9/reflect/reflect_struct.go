@@ -1,17 +1,17 @@
 package main
 
 import (
-	"reflect"
 	"fmt"
-	)
+	"reflect"
+)
 
 type User struct {
-	Name string	`json:"name"`
-	Age int		`json:"age"`
-	Sex string	`json:"sex"`
+	Name string `json:"name"`
+	Age  int    `json:"age"`
+	Sex  string `json:"sex"`
 }
 
-func testStructValue(in interface{})  {
+func testStructValue(in interface{}) {
 	v := reflect.ValueOf(in)
 	t := v.Type()
 
@@ -32,8 +32,8 @@ func testStructValue(in interface{})  {
 func main() {
 	var user = User{
 		Name: "xyb",
-		Age: 10,
-		Sex: "F",
+		Age:  10,
+		Sex:  "F",
 	}
 
 	testStructValue(user)

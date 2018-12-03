@@ -17,7 +17,7 @@ import (
 
 func grade(score int) string {
 	g := ""
-	switch  {
+	switch {
 	case score < 0 || score > 100:
 		panic(fmt.Sprintf("Wrong score: %d", score))
 	case score < 60:
@@ -34,7 +34,7 @@ func grade(score int) string {
 	return g
 }
 
-func main()  {
+func main() {
 	//const filename  = "abc.txt"
 	//if contents, err := ioutil.ReadFile(filename); err != nil {
 	//	fmt.Println(err)

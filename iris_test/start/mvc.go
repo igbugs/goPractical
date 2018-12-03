@@ -17,12 +17,12 @@ func main() {
 	app.Run(iris.Addr(":8080"))
 }
 
-type ExampleController struct {}
+type ExampleController struct{}
 
 func (c *ExampleController) Get() mvc.Result {
 	return mvc.Response{
-		ContentType:  "text/html",
-		Text: "<h1>Welcome</h1>",
+		ContentType: "text/html",
+		Text:        "<h1>Welcome</h1>",
 	}
 }
 
@@ -30,7 +30,7 @@ func (c *ExampleController) GetPing() string {
 	return "pong"
 }
 
-func (c *ExampleController) GetHello() interface{}{
+func (c *ExampleController) GetHello() interface{} {
 	return map[string]string{
 		"message": "Hello Iris!",
 	}

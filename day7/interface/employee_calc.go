@@ -16,8 +16,8 @@ func (d *Developer) Calc() float32 {
 }
 
 type PM struct {
-	Name string
-	Base float32
+	Name   string
+	Base   float32
 	Option float32
 }
 
@@ -26,14 +26,14 @@ func (p *PM) Calc() float32 {
 }
 
 type YY struct {
-	Name string
-	Base float32
+	Name   string
+	Base   float32
 	Option float32
-	Ratio float32
+	Ratio  float32
 }
 
 func (y *YY) Calc() float32 {
-	return y.Base + y.Option * y.Ratio
+	return y.Base + y.Option*y.Ratio
 }
 
 type EmployeeMgr struct {
@@ -63,17 +63,17 @@ func main() {
 	e.AddEmployee(dev)
 
 	pm := &PM{
-		Name: "pm",
-		Base: 10000,
+		Name:   "pm",
+		Base:   10000,
 		Option: 1110,
 	}
 	e.AddEmployee(pm)
 
 	yy := &YY{
-		Name: "yy",
-		Base: 10000,
+		Name:   "yy",
+		Base:   10000,
 		Option: 1110,
-		Ratio: 1.2,
+		Ratio:  1.2,
 	}
 	e.AddEmployee(yy)
 

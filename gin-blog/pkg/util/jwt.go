@@ -9,8 +9,8 @@ import (
 var jwtSecret = []byte(setting.AppSetting.JwtSecret)
 
 type Claims struct {
-	Username string	`json:"username"`
-	Password string		`json:"password"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 	jwt.StandardClaims
 }
 
@@ -23,7 +23,7 @@ func GenerateToken(username, password string) (string, error) {
 		password,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer: "gin-blog",
+			Issuer:    "gin-blog",
 		},
 	}
 
@@ -35,9 +35,9 @@ func GenerateToken(username, password string) (string, error) {
 
 func ParseToken(token string) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{},
-			func(token *jwt.Token) (interface{}, error) {
-				return jwtSecret, nil
-	})
+		func(token *jwt.Token) (interface{}, error) {
+			return jwtSecret, nil
+		})
 
 	if tokenClaims != nil {
 		if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {

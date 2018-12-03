@@ -1,10 +1,10 @@
 package main
 
 import (
-	"os"
+	"compress/gzip"
 	"fmt"
 	"io"
-	"compress/gzip"
+	"os"
 )
 
 func main() {

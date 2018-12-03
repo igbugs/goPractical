@@ -1,11 +1,11 @@
 package timer
 
 import (
-	"time"
 	"fmt"
+	"time"
 )
 
-func testTimer()  {
+func testTimer() {
 	// NewTimer 只执行一次，之后从 time.C 中取值时会进行阻塞
 	timer := time.NewTimer(time.Second)
 
@@ -13,10 +13,10 @@ func testTimer()  {
 		fmt.Printf("time: %v\n", v)
 		timer.Reset(time.Second)
 	}
-	
+
 }
 
-func testTicker()  {
+func testTicker() {
 	// NewTicker 会一直进行在时间间隔之后执行
 	ticker := time.NewTicker(time.Second)
 
@@ -32,13 +32,13 @@ func timestampToTime(timestamp int64) {
 	fmt.Printf("convert timestamp to time: %v\n", t)
 }
 
-func test()  {
+func test() {
 	start := time.Now().UnixNano()
 	for i := 0; i < 100000000; i++ {
 		_ = i
 	}
 	end := time.Now().UnixNano()
-	fmt.Printf("Cost time is: %d\n",(end - start)/1000)
+	fmt.Printf("Cost time is: %d\n", (end-start)/1000)
 }
 
 func main() {

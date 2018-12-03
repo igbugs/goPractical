@@ -2,15 +2,15 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	)
+)
 
 type Tag struct {
 	Model
-	
-	Name string			`json:"name"`
-	CreatedBy string	`json:"created_by"`
-	ModifiedBy string	`json:"modified_by"`
-	State int			`json:"state"`
+
+	Name       string `json:"name"`
+	CreatedBy  string `json:"created_by"`
+	ModifiedBy string `json:"modified_by"`
+	State      int    `json:"state"`
 }
 
 func GetTags(pageNum int, pageSize int, maps interface{}) (tags []Tag, err error) {
@@ -61,8 +61,8 @@ func ExistTagByID(id int) (bool, error) {
 
 func AddTag(name string, state int, createdBy string) error {
 	err := db.Create(&Tag{
-		Name: name,
-		State: state,
+		Name:      name,
+		State:     state,
 		CreatedBy: createdBy,
 	}).Error
 	if err != nil {
@@ -107,4 +107,3 @@ func CleanAllTag() (bool, error) {
 	}
 	return true, nil
 }
-

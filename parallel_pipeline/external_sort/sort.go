@@ -1,10 +1,10 @@
 package main
 
 import (
-	"os"
-	"parallel_pipeline/pipeline"
 	"bufio"
 	"fmt"
+	"os"
+	"parallel_pipeline/pipeline"
 	"strconv"
 )
 
@@ -66,13 +66,13 @@ func createNetPipeline(filename string, fileSize, chunkCount int) <-chan int {
 
 		source := pipeline.ReaderSource(bufio.NewReader(file), chunkSize)
 
-		addr := ":" + strconv.Itoa(7000 + i)
+		addr := ":" + strconv.Itoa(7000+i)
 		pipeline.NetWorkerSink(addr, pipeline.InMemSort(source))
 		// 将每个 chunk 读取后，启动的tcp server 的地址收集起来
 		sortAddr = append(sortAddr, addr)
 	}
 
-	sortResults := make([]<-chan int,0)
+	sortResults := make([]<-chan int, 0)
 	for _, addr := range sortAddr {
 		// 连接每个的tcp server 将 远程读取的数据，发送到 out channel 后输出到 sortResults的channel 的切片 合集中去
 		sortResults = append(sortResults, pipeline.NetWorkerSource(addr))
@@ -94,7 +94,7 @@ func writeToFile(p <-chan int, filename string) {
 	pipeline.WriteSink(writer, p)
 }
 
-func printFile(filename string)  {
+func printFile(filename string) {
 	file, err := os.Open(filename)
 	if err != nil {
 		panic(err)

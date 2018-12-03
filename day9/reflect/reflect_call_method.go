@@ -28,7 +28,7 @@ func TestValue(a interface{}) {
 	var args []reflect.Value
 	m.Call(args)
 
-	args = args[0:0]	// 清空参数列表
+	args = args[0:0] // 清空参数列表
 	m = v.MethodByName("SetName")
 	args = append(args, reflect.ValueOf("XYB"))
 	m.Call(args)

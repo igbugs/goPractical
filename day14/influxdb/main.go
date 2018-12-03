@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"github.com/influxdata/influxdb/client/v2"
 	"github.com/lunny/log"
 	"time"
-	"fmt"
-	)
+)
 
 const (
 	MyDB          = "sys_info"
@@ -16,7 +16,7 @@ const (
 
 func connInflux() client.Client {
 	cli, err := client.NewHTTPClient(client.HTTPConfig{
-		Addr:     "http://192.168.247.131:8086",
+		Addr:     "http://127.0.0.1:8086",
 		Username: username,
 		Password: password,
 	})

@@ -19,7 +19,6 @@ func main() {
 		fmt.Printf("test nil pointer")
 	}()
 
-
 	for {
 		fmt.Printf("next running!\n")
 		time.Sleep(time.Second)

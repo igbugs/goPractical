@@ -1,17 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"bytes"
+	"fmt"
 )
 
-func test_str1()  {
+func test_str1() {
 	var a string = "hello \n \n \n"
 	var b = "hello"
 	fmt.Printf("a = %v, b = %s\n", a, b)
 }
 
-func test_str2()  {
+func test_str2() {
 	var a string = `
 	ksdfjklf
 kfjksdj
@@ -19,7 +19,7 @@ ksdj`
 	fmt.Printf("b = %s\n", a)
 }
 
-func test_char()  {
+func test_char() {
 	var c byte
 	var d rune
 
@@ -34,8 +34,6 @@ func main() {
 	test_str2()
 	test_char()
 
-
 	ss := []byte("   hello,    world!  ")
 	fmt.Printf("%q", string(bytes.TrimSpace(ss)))
 }
-

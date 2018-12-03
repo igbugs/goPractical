@@ -2,11 +2,11 @@ package util
 
 import (
 	"bufio"
-	"fmt"
-	"strings"
-	"io/ioutil"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"strconv"
+	"strings"
 )
 
 func ReadInput(r *bufio.Reader) string {

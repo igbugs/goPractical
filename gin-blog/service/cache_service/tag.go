@@ -4,14 +4,14 @@ import (
 	"gin-blog/pkg/e"
 	"strconv"
 	"strings"
-	)
+)
 
 type Tag struct {
-	ID int
-	Name string
+	ID    int
+	Name  string
 	State int
 
-	PageNum int
+	PageNum  int
 	PageSize int
 }
 

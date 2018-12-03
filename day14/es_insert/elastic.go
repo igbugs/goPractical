@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/olivere/elastic"
-	"fmt"
-	"math/rand"
 	"context"
+	"fmt"
+	"github.com/olivere/elastic"
+	"math/rand"
 )
 
 type Person struct {
@@ -17,7 +17,7 @@ type Person struct {
 
 func main() {
 	client, err := elastic.NewClient(elastic.SetSniff(false),
-		elastic.SetURL("http://192.168.247.131:9200"))
+		elastic.SetURL("http://127.0.0.1:9200"))
 	if err != nil {
 		fmt.Printf("new client failed, err: %v", err)
 		return

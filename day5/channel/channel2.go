@@ -34,16 +34,14 @@ func main() {
 	exitCH := make(chan bool, 2)
 
 	//for i := 0; i < 2; i++ {
-		go sendData(ch, exitCH)
+	go sendData(ch, exitCH)
 
 	//}
-
 
 	//for i := 0; i < 2; i++ {
-		go getData(ch, exitCH)
+	go getData(ch, exitCH)
 
 	//}
-
 
 	for i := 0; i < 2; i++ {
 		<-exitCH

@@ -1,12 +1,12 @@
 package configlib
 
 import (
+	"fmt"
 	"io/ioutil"
 	"reflect"
-	"strings"
-	"fmt"
 	"strconv"
-	)
+	"strings"
+)
 
 func UnMarshalFile(filename string, result interface{}) (err error) {
 	data, err := ioutil.ReadFile(filename)
@@ -41,12 +41,12 @@ func UnMarshal(data []byte, result interface{}) (err error) {
 		}
 
 		if line[0] == '[' {
-			if len(line) <=2 || line[len(line)-1] != ']' {
+			if len(line) <= 2 || line[len(line)-1] != ']' {
 				tips := fmt.Sprintf("syntax error: invalid section: \"%s\" line: %d", line, lineNo)
 				panic(tips)
 			}
 
-			sectionName = strings.TrimSpace(line[1:len(line)-1])
+			sectionName = strings.TrimSpace(line[1 : len(line)-1])
 			if len(sectionName) == 0 {
 				tips := fmt.Sprintf("syntax error: invalid section: \"%s\" line: %d", line, lineNo)
 				panic(tips)
@@ -75,7 +75,7 @@ func UnMarshal(data []byte, result interface{}) (err error) {
 				panic(tips)
 			}
 
-			for i:=0; i< t.Elem().NumField(); i++ {
+			for i := 0; i < t.Elem().NumField(); i++ {
 				// 获取嵌入的Conf 结构体的类型的信息
 				tfs := t.Elem().Field(i)
 				// 获取嵌入的Conf 结构体的值的信息
@@ -99,7 +99,7 @@ func UnMarshal(data []byte, result interface{}) (err error) {
 					tfsKeyf := tfsType.Field(j)
 					// 获取各个字段的value的值的信息
 					vfsValuef := vfs.Field(j)
-					
+
 					// 获取各个字段的key 的 tag 的类型信息
 					if tfsKeyf.Tag.Get("ini") != key {
 						continue
@@ -157,7 +157,7 @@ func Marshal(result interface{}) (data []byte, err error) {
 	}
 
 	var strSlice []string
-	for i:=0; i< t.NumField();i++ {
+	for i := 0; i < t.NumField(); i++ {
 		// 取得嵌入Conf内部的结构体的类型的信息
 		tf := t.Field(i)
 		vf := v.Field(i)
@@ -193,7 +193,7 @@ func Marshal(result interface{}) (data []byte, err error) {
 
 			subVf := vf.Field(j)
 			filedStr := fmt.Sprintf("%s=%v\n", subTfName, subVf.Interface())
-			fmt.Printf("conf: %s", filedStr)
+			fmt.Printf("config: %s", filedStr)
 
 			strSlice = append(strSlice, filedStr)
 		}

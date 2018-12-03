@@ -17,8 +17,7 @@ func cacl(ctx context.Context, a, b int) int {
 	return add(ctx, a, b)
 }
 
-
-func main()  {
+func main() {
 	ctx := context.WithValue(context.Background(), "trace_id", "123456")
 	cacl(ctx, 200, 345)
 }

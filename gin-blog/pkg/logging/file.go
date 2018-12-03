@@ -2,8 +2,8 @@ package logging
 
 import (
 	"fmt"
-	"time"
 	"gin-blog/pkg/setting"
+	"time"
 )
 
 func getLogFilePath() string {

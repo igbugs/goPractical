@@ -7,28 +7,28 @@ import (
 )
 
 type Student struct {
-	ID string		`db:"id"`
-	CardId	string	`db:"card_id"`
-	Name string		`db:"name"`
-	Sex string		`db:"sex"`
-	Grade string	`db:"grade"`
+	ID     string `db:"id"`
+	CardId string `db:"card_id"`
+	Name   string `db:"name"`
+	Sex    string `db:"sex"`
+	Grade  string `db:"grade"`
 }
 
-type StudentMgr struct {}
+type StudentMgr struct{}
 
 type Qstu struct {
-	ID string
+	ID     string
 	CardId string
-	Name string
-	Sex string
-	Grade string
+	Name   string
+	Sex    string
+	Grade  string
 }
 
 func (bm StudentMgr) Query(qs Qstu, db *sql.DB) []Student {
 	sqlStr := "SELECT * FROM student WHERE 1=1"
 
 	if qs.ID != "" {
-		sqlStr += " AND id=" +  qs.ID
+		sqlStr += " AND id=" + qs.ID
 	}
 	if qs.CardId != "" {
 		sqlStr += " AND card_id='" + qs.CardId + "'"

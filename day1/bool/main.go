@@ -5,7 +5,7 @@ import "fmt"
 func main() {
 	var b = false
 	var (
-		c = true
+		c      = true
 		d bool = false
 	)
 

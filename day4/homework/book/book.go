@@ -2,12 +2,12 @@ package book
 
 import (
 	"bufio"
-	"fmt"
-	"strconv"
 	"day4/homework/util"
-	"os"
-	"io/ioutil"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"strconv"
 )
 
 type Book struct {

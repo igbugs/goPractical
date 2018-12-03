@@ -4,7 +4,7 @@ import "fmt"
 
 type Student struct {
 	Name string
-	Age int
+	Age  int
 }
 
 func (s Student) GetName() string {
@@ -18,7 +18,7 @@ func (s *Student) SetName(name string) {
 func main() {
 	var s1 = Student{
 		Name: "s1",
-		Age: 100,
+		Age:  100,
 	}
 
 	name := s1.GetName()

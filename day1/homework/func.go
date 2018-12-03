@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"bytes"
+	"fmt"
 )
 
 func f(a, b int) (sum, sub int) {
@@ -13,7 +13,7 @@ func f(a, b int) (sum, sub int) {
 
 func f1(s string, str ...string) {
 	fmt.Println(str)
-	for _,ss := range str {
+	for _, ss := range str {
 		fmt.Println(s, ss)
 	}
 
@@ -36,4 +36,3 @@ func main() {
 	//wr := bytes.NewBuffer(nil)
 	//w := bufio.NewWriter(wr)
 }
-

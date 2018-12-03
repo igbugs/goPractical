@@ -1,21 +1,21 @@
 package main
 
 import (
-	"strings"
 	"flag"
 	"fmt"
-	"path/filepath"
 	"os"
+	"path/filepath"
+	"strings"
 	"sync"
 )
 
 var (
 	imageChan chan *Task
-	imageDir string
+	imageDir  string
 )
 
 // 此函数将取得 源图片的路径，生成保存文件的名字，组装成任务的结构体，分配任务 imagChan 的管道内，交由task.process() 函数进行处理
-func procFile(path string, info os.FileInfo, err error) error{
+func procFile(path string, info os.FileInfo, err error) error {
 	fmt.Printf("path:%s\n", path)
 	if info.IsDir() {
 		if err != nil {
@@ -36,11 +36,11 @@ func procFile(path string, info os.FileInfo, err error) error{
 		saveFile := filepath.Join(pathDir,
 			fmt.Sprintf("%s%s.%s", baseFileSeg[0], "_thumb", baseFileSeg[1]))
 
-		fmt.Printf("save file:%s, path:%s dir:%s\n", saveFile,  path, pathDir)
+		fmt.Printf("save file:%s, path:%s dir:%s\n", saveFile, path, pathDir)
 		task := &Task{
 			imageFile: path,
-			taskType: TaskThumb,
-			saveFile: saveFile,
+			taskType:  TaskThumb,
+			saveFile:  saveFile,
 		}
 
 		imageChan <- task

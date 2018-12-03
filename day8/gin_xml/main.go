@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-
 )
 
 type Result struct {
@@ -18,16 +17,13 @@ type UserInfo struct {
 
 func handleUserInfo(c *gin.Context) {
 
-
-	var userInfo = &UserInfo {
+	var userInfo = &UserInfo{
 		UserName: "skkss",
-		Passwd: "SSSS",
+		Passwd:   "SSSS",
 	}
 
 	c.XML(200, userInfo)
 }
-
-
 
 func main() {
 	r := gin.Default()

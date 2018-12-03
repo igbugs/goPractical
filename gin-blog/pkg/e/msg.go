@@ -1,6 +1,6 @@
 package e
 
-var MsgFlags = map[int]string {
+var MsgFlags = map[int]string{
 	SUCCESS:                         "ok",
 	ERROR:                           "fail",
 	INVAILD_PARAMS:                  "请求参数错误",

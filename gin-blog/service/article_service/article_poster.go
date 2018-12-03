@@ -1,16 +1,16 @@
 package article_service
 
 import (
-	"gin-blog/pkg/qrcode"
 	"gin-blog/pkg/file"
-	"os"
-	"image/jpeg"
+	"gin-blog/pkg/logging"
+	"gin-blog/pkg/qrcode"
+	"gin-blog/pkg/setting"
+	"github.com/golang/freetype"
 	"image"
 	"image/draw"
-	"gin-blog/pkg/logging"
-	"gin-blog/pkg/setting"
+	"image/jpeg"
 	"io/ioutil"
-	"github.com/golang/freetype"
+	"os"
 )
 
 type ArticlePoster struct {
@@ -22,8 +22,8 @@ type ArticlePoster struct {
 func NewArticlePoster(posterName string, article *Article, qr *qrcode.Qrcode) *ArticlePoster {
 	return &ArticlePoster{
 		PosterName: posterName,
-		Article: article,
-		Qr: qr,
+		Article:    article,
+		Qr:         qr,
 	}
 }
 
@@ -50,10 +50,10 @@ func (a *ArticlePoster) OpenMergedImage(path string) (*os.File, error) {
 
 type Rect struct {
 	Name string
-	X0 int
-	Y0 int
-	X1 int
-	Y1 int
+	X0   int
+	Y0   int
+	X1   int
+	Y1   int
 }
 
 type Pt struct {
@@ -70,10 +70,10 @@ type ArticlePosterBg struct {
 
 func NewArticlePosterBg(name string, ap *ArticlePoster, rect *Rect, pt *Pt) *ArticlePosterBg {
 	return &ArticlePosterBg{
-		Name: name,
+		Name:          name,
 		ArticlePoster: ap,
-		Rect: rect,
-		Pt: pt,
+		Rect:          rect,
+		Pt:            pt,
 	}
 }
 
@@ -127,18 +127,18 @@ func (a *ArticlePosterBg) Generate() (string, string, error) {
 		//jpeg.Encode(mergedF, jpg, nil)
 
 		err = a.DrawPoster(&DrawText{
-			JPG: jpg,
+			JPG:    jpg,
 			Merged: mergedF,
 
 			Title: "Golang gin study",
-			X0: 80,
-			Y0: 100,
+			X0:    80,
+			Y0:    100,
 			Size0: 42,
 
 			SubTitle: "---igbugs",
-			X1: 320,
-			Y1: 220,
-			Size1: 36,
+			X1:       320,
+			Y1:       220,
+			Size1:    36,
 		}, "msyhbd.ttc")
 
 		if err != nil {
@@ -150,18 +150,18 @@ func (a *ArticlePosterBg) Generate() (string, string, error) {
 }
 
 type DrawText struct {
-	JPG draw.Image
+	JPG    draw.Image
 	Merged *os.File
 
 	Title string
-	X0 int
-	Y0 int
+	X0    int
+	Y0    int
 	Size0 float64
 
 	SubTitle string
-	X1 int
-	Y1 int
-	Size1 float64
+	X1       int
+	Y1       int
+	Size1    float64
 }
 
 func (a *ArticlePosterBg) DrawPoster(d *DrawText, fontName string) error {

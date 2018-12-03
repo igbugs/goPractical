@@ -1,15 +1,15 @@
 package main
 
 import (
-	"sync"
 	"fmt"
 	"runtime"
+	"sync"
 )
 
 var (
 	counter int64
-	wg sync.WaitGroup
-	mutex sync.Mutex
+	wg      sync.WaitGroup
+	mutex   sync.Mutex
 )
 
 func incCounter(id int) {
@@ -25,10 +25,10 @@ func incCounter(id int) {
 
 		mutex.Lock()
 		//{
-			value := counter
-			runtime.Gosched()
-			value++
-			counter = value
+		value := counter
+		runtime.Gosched()
+		value++
+		counter = value
 		//}
 		mutex.Unlock()
 	}

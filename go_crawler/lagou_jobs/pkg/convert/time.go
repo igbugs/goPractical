@@ -1,8 +1,8 @@
 package convert
 
 import (
-	"time"
 	"github.com/jinzhu/now"
+	"time"
 )
 
 func MustDateToUnix(date string) int64 {

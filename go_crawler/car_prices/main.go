@@ -1,25 +1,25 @@
 package main
 
 import (
-	"go_crawler/car_prices/spiders"
-	"go_crawler/car_prices/downloader"
-	"github.com/PuerkitoBio/goquery"
-	"logging"
-	"go_crawler/car_prices/scheduler"
 	"fmt"
-	"time"
+	"github.com/PuerkitoBio/goquery"
+	"go_crawler/car_prices/downloader"
 	"go_crawler/car_prices/model"
+	"go_crawler/car_prices/scheduler"
+	"go_crawler/car_prices/spiders"
+	"logging"
+	"time"
 )
 
 var (
 	StartUrl = "/2sc/%s/a0_0msdgscncgpi1ltocsp1exb4/"
-	BaseUrl = "https://car.autohome.com.cn"
+	BaseUrl  = "https://car.autohome.com.cn"
 
 	maxPage = 99
-	cars []spiders.QcCar
+	cars    []spiders.QcCar
 )
 
-func Start(url string, ch chan []spiders.QcCar)  {
+func Start(url string, ch chan []spiders.QcCar) {
 	body := downloader.Get(BaseUrl + url)
 	doc, err := goquery.NewDocumentFromReader(body)
 	if err != nil {
@@ -46,7 +46,7 @@ func Start(url string, ch chan []spiders.QcCar)  {
 	}
 }
 
-func main()  {
+func main() {
 	citys := spiders.GetCitys()
 	for _, v := range citys {
 		scheduler.AppendUrl(fmt.Sprintf(StartUrl, v.Pinyin))
@@ -57,29 +57,27 @@ func main()  {
 
 	ch := make(chan []spiders.QcCar)
 
-	LOOP:
-		for {
-			if url := scheduler.PopUrl(); url != "" {
-				// 进入最后的一个 URLs 这个 切片的城市，获取车的信息
-				go Start(url, ch)
-			}
-
-			select {
-			case result := <- ch:
-				//cars = append(cars, result...)
-				model.AddCars(result)
-				go Start(scheduler.PopUrl(), ch)
-			case <- time.After(delayTime):
-				logging.Warn("Timeout from channel..")
-				break LOOP
-			}
+LOOP:
+	for {
+		if url := scheduler.PopUrl(); url != "" {
+			// 进入最后的一个 URLs 这个 切片的城市，获取车的信息
+			go Start(url, ch)
 		}
+
+		select {
+		case result := <-ch:
+			//cars = append(cars, result...)
+			model.AddCars(result)
+			go Start(scheduler.PopUrl(), ch)
+		case <-time.After(delayTime):
+			logging.Warn("Timeout from channel..")
+			break LOOP
+		}
+	}
 
 	//if len(cars) > 0 {
 	//	model.AddCars(cars)
 	//}
 
-	logging.Debug("Time: %s", time.Since(start) - delayTime)
+	logging.Debug("Time: %s", time.Since(start)-delayTime)
 }
-
-

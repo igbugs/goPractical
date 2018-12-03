@@ -1,24 +1,24 @@
 package main
 
 import (
-	"time"
 	"fmt"
 	"sync"
+	"time"
 )
 
 var count int
 var mutex sync.Mutex
 
-func test1()  {
-	for i:=0; i<1000000;i++{
+func test1() {
+	for i := 0; i < 1000000; i++ {
 		mutex.Lock()
 		count++
 		mutex.Unlock()
 	}
 }
 
-func test2()  {
-	for i:=0; i<1000000;i++{
+func test2() {
+	for i := 0; i < 1000000; i++ {
 		mutex.Lock()
 		count++
 		mutex.Unlock()

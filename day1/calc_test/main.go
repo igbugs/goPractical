@@ -4,7 +4,6 @@ import (
 	"fmt"
 )
 
-
 func main() {
 	//var c int
 	//c = calc.Add(2, 3)
@@ -39,9 +38,7 @@ func main() {
 
 	var c, d int = 15, 6
 	var f float64
-	f = float64(c /d)
+	f = float64(c / d)
 	fmt.Println(f)
 
-
 }
-

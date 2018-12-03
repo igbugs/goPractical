@@ -10,8 +10,8 @@ func main() {
 	fmt.Scanf("%d\n", &n)
 
 	for i := 0; i < len(arr); i++ {
-		for j := i+1; j < len(arr); j++ {
-			if arr[j] == n - arr[i] {
+		for j := i + 1; j < len(arr); j++ {
+			if arr[j] == n-arr[i] {
 				fmt.Printf("index: (%d, %d) values: (%d, %d)\n", i, j, arr[i], arr[j])
 			} else {
 				continue

@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"github.com/kataras/iris"
-	"superstar/services"
 	"github.com/kataras/iris/mvc"
-	"superstar/models"
 	"log"
+	"superstar/models"
+	"superstar/services"
 	"time"
 )
 
@@ -15,15 +15,15 @@ type AdminController struct {
 }
 
 func (c *AdminController) Get() mvc.Result {
-		dataList := c.Service.GetAll()
-		return mvc.View{
-			Name: "admin/index.html",
-			Data: iris.Map{
-				"Title": "管理后台",
-				"DataList": dataList,
-			},
-			Layout: "admin/layout.html",
-		}
+	dataList := c.Service.GetAll()
+	return mvc.View{
+		Name: "admin/index.html",
+		Data: iris.Map{
+			"Title":    "管理后台",
+			"DataList": dataList,
+		},
+		Layout: "admin/layout.html",
+	}
 }
 
 func (c *AdminController) GetEdit() mvc.Result {

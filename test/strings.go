@@ -1,9 +1,11 @@
 package main
+
 import (
 	"fmt"
 	"strings"
 	//"unicode/utf8"
 )
+
 func main() {
 	fmt.Println("查找子串是否在指定的字符串中")
 	fmt.Println(" Contains 函数的用法")

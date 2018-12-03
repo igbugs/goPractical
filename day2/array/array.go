@@ -19,7 +19,7 @@ func main() {
 	a3 := [...]int{1, 2, 3, 4, 5, 6}
 
 	a4 := [3]int{10}
-	a5 := [3]int{2:300}
+	a5 := [3]int{2: 300}
 
 	fmt.Printf("a1 = %v\n", a1)
 	fmt.Printf("a2 = %v\n", a2)
@@ -28,10 +28,10 @@ func main() {
 	fmt.Printf("a5 = %v\n", a5)
 
 	for index, value := range a3 {
-		fmt.Printf("a3[%d] = %d\n",index, value)
+		fmt.Printf("a3[%d] = %d\n", index, value)
 	}
 
-	var a6 [3][2]int = [3][2]int {
+	var a6 [3][2]int = [3][2]int{
 		{1, 2},
 		{3, 4},
 		{5, 6},

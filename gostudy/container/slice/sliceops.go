@@ -44,8 +44,8 @@ func main() {
 	printSlice(s2)
 
 	fmt.Println("Popping from back")
-	tail := s2[len(s2) - 1]
-	s2 = s2[:len(s2) -1]
+	tail := s2[len(s2)-1]
+	s2 = s2[:len(s2)-1]
 
 	fmt.Println(tail)
 	printSlice(s2)

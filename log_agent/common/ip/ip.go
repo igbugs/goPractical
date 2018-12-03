@@ -1,8 +1,8 @@
 package ip
 
 import (
-	"net"
 	"logging"
+	"net"
 )
 
 var localIP string

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/garyburd/redigo/redis"
 	"fmt"
+	"github.com/garyburd/redigo/redis"
 	"time"
 )
 
@@ -114,7 +114,7 @@ func newPool(server, password string) *redis.Pool {
 	}
 }
 
-func testRedisPool()  {
+func testRedisPool() {
 	pool := newPool("192.168.247.133:6379", "")
 
 	// 获取一个连接

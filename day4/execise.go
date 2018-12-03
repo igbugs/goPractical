@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func test1()  {
+func test1() {
 	a := 100
 	fmt.Printf("addr of a: %p\n", &a)
 }

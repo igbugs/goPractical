@@ -1,16 +1,16 @@
 package kafka
 
 import (
-	"github.com/Shopify/sarama"
-	"logging"
 	"encoding/json"
+	"github.com/Shopify/sarama"
 	"log_transfer/es"
+	"logging"
 )
 
 var consumer sarama.Consumer
 
 func Init(addr string, topic string) (err error) {
-	consumer, err := sarama.NewConsumer([]string{addr}, nil)
+	consumer, err = sarama.NewConsumer([]string{addr}, nil)
 	if err != nil {
 		logging.Error("new kafka consumer failed, err:%v", err)
 		return
@@ -36,7 +36,7 @@ func Init(addr string, topic string) (err error) {
 		go func() {
 			messageChan := pc.Messages()
 			for m := range messageChan {
-				logging.Debug("recv from kafka, text:%v", m, string(m.Value))
+				logging.Debug("recv from kafka, consumer msg body %v, text:%v", m, string(m.Value))
 				var msg = make(map[string]interface{}, 16)
 
 				err = json.Unmarshal(m.Value, &msg)
@@ -46,7 +46,7 @@ func Init(addr string, topic string) (err error) {
 				}
 
 				es.AppendMsg(msg)
-				logging.Debug("append msg to es succ, msg:%#v", msg)
+				logging.Debug("append msg to es succ, msg:%v", msg)
 			}
 		}()
 	}

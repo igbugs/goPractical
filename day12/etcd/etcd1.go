@@ -1,14 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"go.etcd.io/etcd/clientv3"
 	"time"
-	"fmt"
 )
 
-func main()  {
+func main() {
 	cli, err := clientv3.New(clientv3.Config{
-		Endpoints: []string{"192.168.20.200:2379"},
+		Endpoints:   []string{"192.168.20.200:2379"},
 		DialTimeout: 5 * time.Second,
 	})
 

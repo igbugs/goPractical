@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func modify(arr *[3]int)  {
+func modify(arr *[3]int) {
 	(*arr)[0] = 90
 }
 func main() {

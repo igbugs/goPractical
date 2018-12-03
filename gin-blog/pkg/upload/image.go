@@ -1,16 +1,16 @@
 package upload
 
 import (
+	"fmt"
+	"gin-blog/pkg/file"
+	"gin-blog/pkg/logging"
 	"gin-blog/pkg/setting"
+	"gin-blog/pkg/util"
+	"log"
+	"mime/multipart"
+	"os"
 	"path"
 	"strings"
-	"gin-blog/pkg/util"
-	"gin-blog/pkg/file"
-	"mime/multipart"
-	"log"
-	"gin-blog/pkg/logging"
-	"os"
-	"fmt"
 )
 
 func GetImageFullUrl(name string) string {

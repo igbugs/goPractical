@@ -1,9 +1,9 @@
 package pipeline
 
 import (
-	"sync"
 	"go_crawler/lagou_jobs/model"
 	"logging"
+	"sync"
 )
 
 var (
@@ -31,8 +31,8 @@ type LgJob struct {
 	Education         string
 	Salary            string
 
-	Longitude   float64
-	Latitude    float64
+	Longitude  float64
+	Latitude   float64
 	Linestaion string
 
 	CreateTime int64

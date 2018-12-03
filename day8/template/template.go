@@ -1,22 +1,22 @@
 package main
 
 import (
-	"html/template"
 	"fmt"
+	"html/template"
 	"net/http"
 )
 
 var t *template.Template
 
 type Address struct {
-	City string
+	City     string
 	Province string
 	PostCode string
 }
 
 type User struct {
 	Name string
-	Age int
+	Age  int
 	Address
 }
 
@@ -34,9 +34,9 @@ func handleUserInfo(w http.ResponseWriter, r *http.Request) {
 	for i := 0; i < 10; i++ {
 		var user = User{
 			Name: "user01",
-			Age: 12,
+			Age:  12,
 			Address: Address{
-				City: "beijing",
+				City:     "beijing",
 				Province: "beijing",
 				PostCode: "110101",
 			},

@@ -1,70 +1,70 @@
 package setting
 
 import (
-	"time"
 	"github.com/go-ini/ini"
-		"log"
+	"log"
+	"time"
 )
 
 type App struct {
-	JwtSecret string
-	PageSize int
+	JwtSecret       string
+	PageSize        int
 	RuntimeRootPath string
-	PrefixUrl string
+	PrefixUrl       string
 
-	ImageSavePath string
-	ImageMaxSize int
+	ImageSavePath  string
+	ImageMaxSize   int
 	ImageAllowExts []string
 
 	LogSavePath string
 	LogSaveName string
-	LogFileExt string
-	TimeFormat string
+	LogFileExt  string
+	TimeFormat  string
 
 	ExportSavePath string
 	QrcodeSavePath string
-	FontSavePath string
+	FontSavePath   string
 }
 
 var AppSetting = &App{}
 
 type Server struct {
-	RunMode string
-	HttpPort int
-	ReadTimeout time.Duration
+	RunMode      string
+	HttpPort     int
+	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 }
 
 var ServerSetting = &Server{}
 
 type Database struct {
-	Type string
-	User string
-	Password string
-	Host string
-	Name string
+	Type        string
+	User        string
+	Password    string
+	Host        string
+	Name        string
 	TablePrefix string
 }
 
 var DatabaseSetting = &Database{}
 
 type Redis struct {
-	Host string
-	Password string
-	MaxIdle int
-	MaxActive int
+	Host        string
+	Password    string
+	MaxIdle     int
+	MaxActive   int
 	IdleTimeout time.Duration
 }
 
 var RedisSetting = &Redis{}
 
-var cfg  *ini.File
+var cfg *ini.File
 
-func Setup()  {
+func Setup() {
 	var err error
-	cfg, err = ini.Load("conf/app.ini")
+	cfg, err = ini.Load("config/app.ini")
 	if err != nil {
-		log.Fatalf("Fail to parse 'conf/app.ini'; %v", err)
+		log.Fatalf("Fail to parse 'config/app.ini'; %v", err)
 	}
 
 	mapTo("app", AppSetting)
@@ -79,7 +79,7 @@ func Setup()  {
 
 }
 
-func mapTo(section string, v interface{})  {
+func mapTo(section string, v interface{}) {
 	err := cfg.Section(section).MapTo(v)
 	if err != nil {
 		log.Fatalf("cfg.MapTo Setting %v , err: %v", v, err)

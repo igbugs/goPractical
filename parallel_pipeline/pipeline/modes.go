@@ -1,17 +1,17 @@
 package pipeline
 
 import (
-	"sort"
-	"io"
 	"encoding/binary"
-	"math/rand"
-	"time"
 	"fmt"
+	"io"
+	"math/rand"
+	"sort"
+	"time"
 )
 
 var startTime time.Time
 
-func Init()  {
+func Init() {
 	startTime = time.Now()
 }
 
@@ -35,10 +35,10 @@ func InMemSort(in <-chan int) <-chan int {
 			a = append(a, v)
 		}
 		// read 一个 chunkSize 后的时间
-		fmt.Println("Read done: ", time.Now().Sub(startTime) )
+		fmt.Println("Read done: ", time.Now().Sub(startTime))
 
 		sort.Ints(a)
-		fmt.Println("InMemSort done: ", time.Now().Sub(startTime) )
+		fmt.Println("InMemSort done: ", time.Now().Sub(startTime))
 
 		for _, v := range a {
 			out <- v
@@ -111,7 +111,7 @@ func Merge(in1, in2 <-chan int) <-chan int {
 			}
 		}
 		close(out)
-		fmt.Println("Merge done: ", time.Now().Sub(startTime) )
+		fmt.Println("Merge done: ", time.Now().Sub(startTime))
 	}()
 	return out
 }

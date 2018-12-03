@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"strconv"
-	"os"
 	"bufio"
+	"fmt"
 	"io"
+	"os"
+	"strconv"
 	"strings"
 )
 
@@ -35,13 +35,13 @@ func printFileContents(reader io.Reader) {
 	}
 }
 
-func forever()  {
+func forever() {
 	for {
 		fmt.Println("abc")
 	}
 }
 
-func memberTest()  {
+func memberTest() {
 	slice := []int{0, 1, 2, 3}
 	for _, member := range slice {
 		fmt.Println(member)
@@ -49,7 +49,7 @@ func memberTest()  {
 
 }
 
-func main()  {
+func main() {
 	//fmt.Println(
 	//	convertToBin(5),
 	//	convertToBin(13),

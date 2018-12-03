@@ -1,37 +1,37 @@
 package article_service
 
 import (
+	"encoding/json"
 	"gin-blog/models"
-	"gin-blog/service/cache_service"
 	"gin-blog/pkg/gredis"
 	"gin-blog/pkg/logging"
-	"encoding/json"
+	"gin-blog/service/cache_service"
 )
 
 type Article struct {
-	ID int
-	TagID int
-	Title string
-	Desc string
-	Content string
+	ID            int
+	TagID         int
+	Title         string
+	Desc          string
+	Content       string
 	CoverImageUrl string
-	State int
-	CreateBy string
-	ModifiedBy string
+	State         int
+	CreateBy      string
+	ModifiedBy    string
 
-	PageNum int
+	PageNum  int
 	PageSize int
 }
 
 func (a *Article) Add() error {
 	article := map[string]interface{}{
-		"tag_id": a.TagID,
-		"title": a.Title,
-		"desc": a.Desc,
-		"content": a.Content,
-		"create_by": a.CreateBy,
+		"tag_id":          a.TagID,
+		"title":           a.Title,
+		"desc":            a.Desc,
+		"content":         a.Content,
+		"create_by":       a.CreateBy,
 		"cover_image_url": a.CoverImageUrl,
-		"state": a.State,
+		"state":           a.State,
 	}
 
 	if err := models.AddArticle(article); err != nil {
@@ -80,9 +80,9 @@ func (a *Article) GetAll() ([]*models.Article, error) {
 	var articles, cacheArticles []*models.Article
 
 	cache := cache_service.Article{
-		TagID: a.TagID,
-		State: a.State,
-		PageNum: a.PageNum,
+		TagID:    a.TagID,
+		State:    a.State,
+		PageNum:  a.PageNum,
 		PageSize: a.PageSize,
 	}
 

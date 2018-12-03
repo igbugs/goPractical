@@ -4,10 +4,10 @@ import "fmt"
 
 type user struct {
 	Name string
-	Age int
+	Age  int
 }
 
-func test1()  {
+func test1() {
 	var p *int = new(int)
 	*p = 1000
 	fmt.Printf("*p: %v\naddr: %v\n", *p, p)

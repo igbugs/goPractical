@@ -17,27 +17,27 @@ func TestInsertStudent(t *testing.T) {
 	var tests = []*models.Student{
 		&models.Student{
 			StudentId: "000000001",
-			Name: "lio",
-			Age: "10",
-			Grade: "F",
+			Name:      "lio",
+			Age:       "10",
+			Grade:     "F",
 		},
 		&models.Student{
 			StudentId: "000000002",
-			Name: "lio",
-			Age: "10",
-			Grade: "F",
+			Name:      "lio",
+			Age:       "10",
+			Grade:     "F",
 		},
 		&models.Student{
 			StudentId: "000000003",
-			Name: "lio",
-			Age: "10",
-			Grade: "F",
+			Name:      "lio",
+			Age:       "10",
+			Grade:     "F",
 		},
 		&models.Student{
 			StudentId: "000000004",
-			Name: "lio",
-			Age: "10",
-			Grade: "F",
+			Name:      "lio",
+			Age:       "10",
+			Grade:     "F",
 		},
 	}
 
@@ -54,9 +54,9 @@ func TestInsertStudent(t *testing.T) {
 func TestUpdateStudent(t *testing.T) {
 	var student = models.Student{
 		StudentId: "000000001",
-		Name: "lio",
-		Age: "10",
-		Grade: "F",
+		Name:      "lio",
+		Age:       "10",
+		Grade:     "F",
 	}
 
 	err := UpdateStudent(&student)
@@ -67,7 +67,6 @@ func TestUpdateStudent(t *testing.T) {
 
 	t.Logf("update student succ")
 }
-
 
 func TestQueryStudent(t *testing.T) {
 	var student *models.Student

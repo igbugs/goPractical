@@ -1,38 +1,38 @@
 package main
 
 import (
-	"sync"
-	"sync/atomic"
+	"flag"
 	"fmt"
 	"net/http"
-	"flag"
+	"sync"
+	"sync/atomic"
 	"time"
 )
 
 var (
 	cocurrent int
-	url string
-	wg sync.WaitGroup
+	url       string
+	wg        sync.WaitGroup
 
-	totalRequest int32
-	totalFailed int32
-	totalSuccess int32
-	totalNot200 int32
+	totalRequest  int32
+	totalFailed   int32
+	totalSuccess  int32
+	totalNot200   int32
 	totalFinished int32
 )
 
-func run()  {
+func run() {
 	defer wg.Done()
 
 	// 此处 是为了计算 10个并行线程，每个的请求数量
-	partNum := totalRequest/10
+	partNum := totalRequest / 10
 	for {
 		totalFinishedRequest := atomic.LoadInt32(&totalFinished)
 		if totalFinishedRequest > totalFinished {
 			break
 		}
 
-		if totalFinishedRequest > 0 && totalFinishedRequest % partNum == 0 {
+		if totalFinishedRequest > 0 && totalFinishedRequest%partNum == 0 {
 			fmt.Printf("total finished:%d requests\n", totalFinishedRequest)
 		}
 
@@ -52,7 +52,7 @@ func run()  {
 	}
 }
 
-func main()  {
+func main() {
 	var tempTotalRequest int
 	flag.IntVar(&cocurrent, "c", 10, "please input the cocurrent")
 	flag.IntVar(&tempTotalRequest, "n", 1000, "please input total request")
@@ -69,7 +69,7 @@ func main()  {
 
 	wg.Wait()
 	endTime := time.Now().UnixNano()
-	costMs := int64(endTime - startTime)/1000/1000
+	costMs := int64(endTime-startTime) / 1000 / 1000
 	if costMs == 0 {
 		panic("cost ms is zero")
 	}
@@ -81,6 +81,5 @@ func main()  {
 	fmt.Printf("total not 200 request:%d\n", totalNot200)
 	fmt.Printf("total success request:%d\n", totalSuccess)
 	fmt.Printf("request per sec:%d\n", requestPerSec)
-	
-}
 
+}

@@ -1,8 +1,8 @@
 package main
 
 import (
-		"fmt"
-	)
+	"fmt"
+)
 
 func doWork(id int, in chan int, done chan bool) {
 	for n := range in {
@@ -14,13 +14,13 @@ func doWork(id int, in chan int, done chan bool) {
 }
 
 type worker struct {
-	in chan int
+	in   chan int
 	done chan bool
 }
 
 func createWorker(id int) worker {
 	w := worker{
-		in: make(chan int),
+		in:   make(chan int),
 		done: make(chan bool),
 	}
 	go doWork(id, w.in, w.done)

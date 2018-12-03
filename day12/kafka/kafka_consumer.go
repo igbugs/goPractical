@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/Shopify/sarama"
 	"fmt"
+	"github.com/Shopify/sarama"
 	"sync"
-	)
+)
 
 var wg sync.WaitGroup
 
-func main()  {
+func main() {
 	consumer, err := sarama.NewConsumer([]string{"192.168.20.200:9092"}, nil)
 	if err != nil {
 		fmt.Println("failed to start consumer: %v", err)

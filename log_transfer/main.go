@@ -2,10 +2,10 @@ package main
 
 import (
 	"log_transfer/common/config"
-	"logging"
 	"log_transfer/common/logs"
 	"log_transfer/es"
 	"log_transfer/kafka"
+	"logging"
 )
 
 func main() {

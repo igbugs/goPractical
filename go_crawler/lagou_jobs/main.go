@@ -1,10 +1,10 @@
 package main
 
 import (
-	"go_crawler/lagou_jobs/spider"
 	"go_crawler/lagou_jobs/pipeline"
-	"sync"
+	"go_crawler/lagou_jobs/spider"
 	"logging"
+	"sync"
 )
 
 var (
@@ -27,7 +27,7 @@ var (
 	wg sync.WaitGroup
 )
 
-func main()  {
+func main() {
 	for _, kd := range kds {
 		for _, city := range citys {
 			wg.Add(1)

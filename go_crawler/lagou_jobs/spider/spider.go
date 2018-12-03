@@ -1,16 +1,16 @@
 package spider
 
 import (
-	"time"
-	"go_crawler/lagou_jobs/scheduler"
-	"go_crawler/lagou_jobs/pipeline"
-	"go_crawler/lagou_jobs/downloader"
-	"logging"
-	"go_crawler/lagou_jobs/pkg/page"
 	"errors"
 	"fmt"
+	"go_crawler/lagou_jobs/downloader"
+	"go_crawler/lagou_jobs/pipeline"
 	"go_crawler/lagou_jobs/pkg/convert"
-	)
+	"go_crawler/lagou_jobs/pkg/page"
+	"go_crawler/lagou_jobs/scheduler"
+	"logging"
+	"time"
+)
 
 var (
 	delayTime = time.Tick(time.Millisecond * 500)
@@ -29,7 +29,7 @@ type InitResult struct {
 type LoopResult struct {
 	Success int
 	Error   int
-	Empty  int
+	Empty   int
 	Errors  []string
 }
 
@@ -49,9 +49,9 @@ func InitJobs(city string, pn int, kd string) ([]InitResult, error) {
 	}
 
 	results = append(results, InitResult{
-		City: city,
-		Kd: kd,
-		TotalPage: totalPage,
+		City:       city,
+		Kd:         kd,
+		TotalPage:  totalPage,
 		TotalCount: totalCount,
 	})
 
@@ -89,7 +89,7 @@ func GetJobs(city string, pn int, kd string) ([]downloader.Result, int, int, err
 	return result.Content.PositionResult.Result, totalPage, result.Content.PositionResult.TotalCount, nil
 }
 
-func LoopJobs() LoopResult  {
+func LoopJobs() LoopResult {
 	var (
 		result LoopResult
 		output = jobScheduler.Count()
@@ -113,18 +113,18 @@ func LoopJobs() LoopResult  {
 		}()
 	}
 
-	LOOP:
-		for {
-			select {
-			case p := <- params:
-				result.Success++
-				jobPipeline.Append(convert.ToPipelineJobs(p))
-			default:
-				if result.Success + result.Error + result.Empty >= output {
-					logging.Debug("LoopJobs finished, Break...")
-					break LOOP
-				}
+LOOP:
+	for {
+		select {
+		case p := <-params:
+			result.Success++
+			jobPipeline.Append(convert.ToPipelineJobs(p))
+		default:
+			if result.Success+result.Error+result.Empty >= output {
+				logging.Debug("LoopJobs finished, Break...")
+				break LOOP
 			}
 		}
-		return result
+	}
+	return result
 }

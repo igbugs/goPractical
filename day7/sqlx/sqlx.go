@@ -1,10 +1,10 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"database/sql"
 )
 
 type User struct {
@@ -16,7 +16,7 @@ type User struct {
 func queryRow(db *sqlx.DB) {
 	id := 1
 	var user User
-	err := db.Get(&user,"select id, name, age from user where id=?", id)
+	err := db.Get(&user, "select id, name, age from user where id=?", id)
 
 	if err == sql.ErrNoRows {
 		fmt.Printf("not found data of id %d\n", id)
@@ -31,7 +31,7 @@ func queryRow(db *sqlx.DB) {
 	fmt.Printf("user: %#v\n", user)
 }
 
-func query(db *sqlx.DB)  {
+func query(db *sqlx.DB) {
 	var user []User
 	id := 0
 
@@ -76,7 +76,7 @@ func main() {
 		return
 	}
 
-	err = db.Ping()		// 防止 账户密码出错，进行检查
+	err = db.Ping() // 防止 账户密码出错，进行检查
 	if err != nil {
 		fmt.Printf("ping mysql failed, err: %v\n", err)
 		return

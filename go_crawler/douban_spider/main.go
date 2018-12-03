@@ -1,16 +1,16 @@
 package main
 
 import (
-	"go_crawler/douban_spider/parse"
-	"go_crawler/douban_spider/model"
-	"logging"
 	"github.com/PuerkitoBio/goquery"
+	"go_crawler/douban_spider/model"
+	"go_crawler/douban_spider/parse"
+	"logging"
 	"strings"
 )
 
 var baseUrl = "https://movie.douban.com/top250"
 
-func add(movies []parse.DoubanMovie)  {
+func add(movies []parse.DoubanMovie) {
 	for index, movie := range movies {
 		if err := model.DB.Create(&movie).Error; err != nil {
 			logging.Error("db.Create index: %d, err: %v", index, err)
@@ -18,7 +18,7 @@ func add(movies []parse.DoubanMovie)  {
 	}
 }
 
-func start()  {
+func start() {
 	var movies []parse.DoubanMovie
 
 	pages := parse.GetPages(baseUrl)
@@ -33,7 +33,7 @@ func start()  {
 	add(movies)
 }
 
-func main()  {
+func main() {
 	logging.Debug("start spider...")
 	start()
 	defer model.DB.Close()

@@ -1,11 +1,11 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
 	"gin-blog/pkg/e"
 	"gin-blog/pkg/logging"
-	"net/http"
 	"gin-blog/pkg/upload"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func UploadImage(c *gin.Context) {
@@ -18,7 +18,7 @@ func UploadImage(c *gin.Context) {
 
 		c.JSON(http.StatusOK, gin.H{
 			"code": code,
-			"msg": e.GetMsg(code),
+			"msg":  e.GetMsg(code),
 			"data": data,
 		})
 	}
@@ -31,7 +31,7 @@ func UploadImage(c *gin.Context) {
 		savePath := upload.GetImagePath()
 
 		src := fullPath + imageName
-		if ! upload.CheckImageExt(imageName) || ! upload.CheckImageSize(file) {
+		if !upload.CheckImageExt(imageName) || !upload.CheckImageSize(file) {
 			code = e.ERROR_UPLOAD_CHECK_IMAGE_FORMAT
 		} else {
 			err := upload.CheckImage(fullPath)

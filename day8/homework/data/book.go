@@ -2,9 +2,9 @@ package data
 
 import (
 	"database/sql"
+	"day8/homework/models"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"day8/homework/models"
 	"time"
 )
 
@@ -105,4 +105,3 @@ func DeleteBook(bookid string) (err error) {
 	}
 	return
 }
-
