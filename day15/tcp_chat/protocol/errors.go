@@ -1,0 +1,8 @@
+package protocol
+
+const (
+	SUCCESS = 0
+	ERR_SERVER_BUSY = 2001
+	ERR_ROOM_REACH_MAX = 2002
+	ERR_INVALID_ROOM_ID = 2003
+)

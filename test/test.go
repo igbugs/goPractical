@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"logging"
-	"math/rand"
-	"time"
 )
 
 
@@ -17,7 +15,7 @@ func main() {
 	//	fmt.Println(len(a), cap(a))
 	//}
 
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	//r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	//for i := 0; i < 10; i++ {
 	//	fmt.Println(r.Int())
 	//}
@@ -31,4 +29,11 @@ func main() {
 	}
 
 	fmt.Println(msg["ip"])
+
+
+	//var a uint16 = 11111
+	//fmt.Printf("uint16 length:%v", len([]byte(a)))
+
+	buf := make([]byte, 6)
+	fmt.Printf("buf length: %v", len(buf))
 }
