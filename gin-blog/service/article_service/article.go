@@ -131,5 +131,4 @@ func (a *Article) getMaps() map[string]interface{} {
 	}
 
 	return maps
-
 }
