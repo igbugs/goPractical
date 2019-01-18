@@ -16,6 +16,7 @@ type OperationHis struct {
 	PwdNo      int    `json:"pwd_no"`
 	Type       int    `json:"type"`
 	Result     string `json:"result"`
+	RltMsg     string `json:"rlt_msg"`
 	TimeStamp  int64  `json:"time_stamp"`
 	ReturnBody string `json:"return_body"`
 }
@@ -47,7 +48,7 @@ func WriteFile(path string, op chan *OperationHis) (err error) {
 	_, err = os.Stat(path)
 	notExist := os.IsNotExist(err)
 	if notExist {
-		header = []string{"门锁编号", "身份证号", "密码编号", "操作类型", "操作结果", "时间", "失败原因"}
+		header = []string{"门锁编号", "身份证号(加密后)", "密码编号", "操作类型", "操作结果", "返回信息", "时间戳", "调用返回结果"}
 	}
 
 	f, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -63,9 +64,9 @@ func WriteFile(path string, op chan *OperationHis) (err error) {
 	}
 	for c := range op {
 		err := w.Write([]string{c.LockNo, c.CardNo, strconv.Itoa(c.PwdNo), strconv.Itoa(c.Type),
-			c.Result, strconv.FormatInt(c.TimeStamp, 10), c.ReturnBody})
+			c.Result, c.RltMsg ,strconv.FormatInt(c.TimeStamp, 10), c.ReturnBody})
 		if err != nil {
-			logging.Error("wtite file failed, err: %v", err)
+			logging.Error("write file failed, err: %v", err)
 			return err
 		}
 		w.Flush()

@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/satori/go.uuid"
 	"github.com/urfave/cli"
 	"io/ioutil"
 	"logging"
@@ -45,7 +44,7 @@ func CardAdd(ctx *cli.Context, token string, pr *CardAddReq) (opHis *OperationHi
 		logging.Error("NewRequest err: %v", err)
 		return nil, err
 	}
-	sid, _ := uuid.NewV4()
+
 	req.Header.Set("version", "1.1")
 	req.Header.Set("s_id", sid.String())
 	req.Header.Set("access_token", token)
@@ -78,6 +77,7 @@ func CardAdd(ctx *cli.Context, token string, pr *CardAddReq) (opHis *OperationHi
 		PwdNo:      cardAddResp.Data.PwdNo,
 		Type:       SEND,
 		Result:     cardAddResp.RltCode,
+		RltMsg:     cardAddResp.RltMsg,
 		TimeStamp:  pr.ValidTimeStart,
 		ReturnBody: string(body),
 	}, nil

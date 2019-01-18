@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/satori/go.uuid"
 	"github.com/urfave/cli"
 	"io/ioutil"
 	"logging"
@@ -33,13 +32,12 @@ func PwdDelete(ctx *cli.Context, token string, pr *PwdDeleteReq) (opHis *Operati
 	logging.Debug("PwdDelete input parameter(pr): %#v", pr)
 	data, _ := json.Marshal(pr)
 	req, err := http.NewRequest("POST",
-		"http://"+ctx.String("host")+"/pwd/card/add",
+		"http://"+ctx.String("host")+"/pwd/delete",
 		bytes.NewReader(data))
 	if err != nil {
 		logging.Error("NewRequest err: %v", err)
 		return nil, err
 	}
-	sid, _ := uuid.NewV4()
 	req.Header.Set("version", "1.1")
 	req.Header.Set("s_id", sid.String())
 	req.Header.Set("access_token", token)
@@ -72,6 +70,7 @@ func PwdDelete(ctx *cli.Context, token string, pr *PwdDeleteReq) (opHis *Operati
 		PwdNo:      pwdResp.Data.PwdNo,
 		Type:       DELETE,
 		Result:     pwdResp.RltCode,
+		RltMsg:     pwdResp.RltMsg,
 		TimeStamp:  time.Now().UnixNano() / 1e6,
 		ReturnBody: string(body),
 	}, nil

@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/satori/go.uuid"
 	"github.com/urfave/cli"
 	"io/ioutil"
 	"logging"
@@ -45,7 +44,6 @@ func PwdList(ctx *cli.Context, token string, pr *PwdLsReq) (opHis *OperationHis,
 		logging.Error("NewRequest err: %v", err)
 		return nil, err
 	}
-	sid, _ := uuid.NewV4()
 	req.Header.Set("version", "1.1")
 	req.Header.Set("s_id", sid.String())
 	req.Header.Set("access_token", token)
@@ -78,6 +76,7 @@ func PwdList(ctx *cli.Context, token string, pr *PwdLsReq) (opHis *OperationHis,
 		PwdNo:      pr.PwdNo,
 		Type:       QUERY,
 		Result:     pwdLsResp.RltCode,
+		RltMsg:     pwdLsResp.RltMsg,
 		TimeStamp:  time.Now().UnixNano() / 1e6,
 		ReturnBody: string(body),
 	}, nil

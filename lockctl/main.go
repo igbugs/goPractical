@@ -1,12 +1,12 @@
 package main
 
 import (
+	"github.com/satori/go.uuid"
 	"github.com/urfave/cli"
 	"logging"
 	"net/http"
 	"os"
 	"sort"
-	"sync"
 	"time"
 )
 
@@ -21,12 +21,10 @@ var (
 		Timeout: 10 * time.Second,
 	}
 	opHisChan = make(chan *OperationHis, 100)
-)
 
-type sendHisDelete struct {
-	lock    *sync.RWMutex
-	DelList map[int64][]*OperationHis
-}
+	sendHis = make(map[int64][]*OperationHis)
+	sid, _  = uuid.NewV4()
+)
 
 func main() {
 	app := cli.NewApp()
@@ -72,6 +70,11 @@ func main() {
 			Name:  "save-pwd-number, spn",
 			Value: 20,
 			Usage: "save password number",
+		},
+		cli.IntFlag{
+			Name:  "pwd-valid-time, pvt",
+			Value: 300000,
+			Usage: "password validtime(ms)",
 		},
 		cli.StringFlag{
 			Name:  "outfile, o",
@@ -119,82 +122,69 @@ func action(ctx *cli.Context) {
 			logging.Error("write file failed, err: %v", err)
 		}
 	}()
-	wg := &sync.WaitGroup{}
 	ticker := time.NewTicker(time.Duration(ctx.Int("interval")) * time.Second)
+	ts := time.Now().UnixNano() / 1e6
+
 	for {
 		for _, cardNo := range cardList {
 			select {
 			case <-ticker.C:
-				ts := time.Now().UnixNano() / 1e6
-
-				var sendHis = sendHisDelete{
-					lock:    new(sync.RWMutex),
-					DelList: make(map[int64][]*OperationHis),
-				}
-
-				sendHis.lock.Lock()
-				{
-					if len(sendHis.DelList) == ctx.Int("save-pwd-number") {
-						var keys []int
-						for k := range sendHis.DelList {
-							keys = append(keys, int(k))
-						}
-						sort.Ints(keys)
-						logging.Debug("the oldest opHistory timestamp: %v", keys[0])
-						logging.Debug("the all opHistory timestamp: %#v", keys)
-
-						for _, op := range sendHis.DelList[int64(keys[0])] {
-							pr := &PwdDeleteReq{
-								LockNo: op.LockNo,
-								PwdNo:  op.PwdNo,
-								Extra:  "",
-							}
-							ret, err := PwdDelete(ctx, token, pr)
-							if err != nil {
-								logging.Error("PwdDelete call failed, err: %v", err)
-							}
-
-							opHisChan <- ret
-
-							delete(sendHis.DelList, int64(keys[0]))
-						}
+				for _, lockNo := range lockList {
+					logging.Debug("send password timestamp: %v", ts)
+					body := &CardAddReq{
+						LockNo:         lockNo,
+						CardType:       2,
+						CardNo:         cardNo,
+						ValidTimeStart: ts,
+						ValidTimeEnd:   ts + int64(ctx.Int("pwd-valid-time")),
+						PwdUserMobile:  ctx.String("phone"),
+						PwdUserName:    "test-send-pass-xyb",
+						Description:    "",
+						Extra:          "",
+					}
+					ret, err := CardAdd(ctx, token, body)
+					if err != nil {
+						logging.Error("send password failed, err: %v", err)
 					}
 
+					logging.Debug("response result: %#v", ret)
+					opHisChan <- ret
+
+					sendHis[ret.TimeStamp] = append(sendHis[ret.TimeStamp], ret)
+
+					logging.Debug("set the sendHis: %v", sendHis)
+
 				}
-				sendHis.lock.Unlock()
+			}
+			ts = ts + 3600*1000
 
-				for _, lockNo := range lockList {
-					wg.Add(1)
-					logging.Debug("send password timestamp: %v", ts)
-					go func(lock string) {
-						defer wg.Done()
-						body := &CardAddReq{
-							LockNo:         lock,
-							CardType:       2,
-							CardNo:         cardNo,
-							ValidTimeStart: ts,
-							ValidTimeEnd:   ts + 5000,
-							PwdUserMobile:  ctx.String("phone"),
-							PwdUserName:    "test-send-pass-xyb",
-							Description:    "",
-							Extra:          "",
-						}
-						ret, err := CardAdd(ctx, token, body)
-						if err != nil {
-							logging.Error("send password failed, err: %v", err)
-						}
+			logging.Debug("sendHis length: %d, save pass number length: %d", len(sendHis), ctx.Int("save-pwd-number"))
+			if len(sendHis) > ctx.Int("save-pwd-number") {
+				var keys []int
+				for k := range sendHis {
+					keys = append(keys, int(k))
+				}
+				sort.Ints(keys)
+				logging.Debug("the oldest opHistory timestamp: %v", keys[0])
+				logging.Debug("the oldest opHistory: %#v", sendHis[int64(keys[0])])
+				logging.Debug("the all opHistory timestamp: %#v", keys)
 
-						logging.Debug("response result: %#v", ret)
-						opHisChan <- ret
+				for _, op := range sendHis[int64(keys[0])] {
+					pr := &PwdDeleteReq{
+						LockNo: op.LockNo,
+						PwdNo:  op.PwdNo,
+						Extra:  "",
+					}
+					ret, err := PwdDelete(ctx, token, pr)
+					if err != nil {
+						logging.Error("PwdDelete call failed, err: %v", err)
+					}
 
-						sendHis.lock.Lock()
-						{
-							sendHis.DelList = map[int64][]*OperationHis{
-								ret.TimeStamp: append(sendHis.DelList[ret.TimeStamp], ret),
-							}
-						}
-						sendHis.lock.Unlock()
-					}(lockNo)
+					logging.Debug("PwdDelete response data: %#v", ret)
+					opHisChan <- ret
+
+					delete(sendHis, int64(keys[0]))
+					logging.Debug("delete after the sendHis: %v", sendHis)
 				}
 			}
 		}
