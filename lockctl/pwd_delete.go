@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"logging"
 	"net/http"
-	"time"
 )
 
 type PwdDeleteReq struct {
@@ -28,7 +27,7 @@ type PwdDeleteResp struct {
 	RltMsg  string            `json:"rlt_msg"`
 }
 
-func PwdDelete(ctx *cli.Context, token string, pr *PwdDeleteReq) (opHis *OperationHis, err error) {
+func PwdDelete(ctx *cli.Context, token string, pr *PwdDeleteReq) (rlt *PwdDeleteResp, err error) {
 	logging.Debug("PwdDelete input parameter(pr): %#v", pr)
 	data, _ := json.Marshal(pr)
 	req, err := http.NewRequest("POST",
@@ -57,21 +56,12 @@ func PwdDelete(ctx *cli.Context, token string, pr *PwdDeleteReq) (opHis *Operati
 	}
 	//fmt.Printf(string(body))
 
-	var pwdResp PwdDeleteResp
-	err = json.Unmarshal(body, &pwdResp)
+	rlt = &PwdDeleteResp{}
+	err = json.Unmarshal(body, rlt)
 	if err != nil {
 		logging.Error("unmarshal err: %v", err)
 		return nil, err
 	}
 
-	return &OperationHis{
-		LockNo:     pr.LockNo,
-		CardNo:     "",
-		PwdNo:      pwdResp.Data.PwdNo,
-		Type:       DELETE,
-		Result:     pwdResp.RltCode,
-		RltMsg:     pwdResp.RltMsg,
-		TimeStamp:  time.Now().UnixNano() / 1e6,
-		ReturnBody: string(body),
-	}, nil
+	return rlt, nil
 }

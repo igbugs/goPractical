@@ -7,24 +7,22 @@ import (
 	"io/ioutil"
 	"logging"
 	"net/http"
-	"time"
 )
 
 type PwdLsReq struct {
 	LockNo string `json:"lock_no"`
 	PwdNo  int    `json:"pwd_no"`
-	Status string `json:"status"`
 }
 
 type PwdLsResp struct {
-	Data    PwdLsRespData `json:"data"`
-	RltCode string        `json:"rlt_code"`
-	RltMsg  string        `json:"rlt_msg"`
+	Data    []*PwdLsRespData `json:"data"`
+	RltCode string           `json:"rlt_code"`
+	RltMsg  string           `json:"rlt_msg"`
 }
 
 type PwdLsRespData struct {
 	LockNo         string `json:"lock_no"`
-	PwdNo          string `json:"pwd_no"`
+	PwdNo          int `json:"pwd_no"`
 	Status         string `json:"status"`
 	PwdText        string `json:"pwd_text"`
 	ValidTimeStart int64  `json:"valid_time_start"`
@@ -34,7 +32,7 @@ type PwdLsRespData struct {
 	PwdUserIdcard  string `json:"pwd_user_idcard"`
 }
 
-func PwdList(ctx *cli.Context, token string, pr *PwdLsReq) (opHis *OperationHis, err error) {
+func PwdList(ctx *cli.Context, token string, pr *PwdLsReq) (rlt *PwdLsResp, err error) {
 	logging.Debug("PwdList input parameter(pr): %#v", pr)
 	data, _ := json.Marshal(pr)
 	req, err := http.NewRequest("POST",
@@ -61,23 +59,14 @@ func PwdList(ctx *cli.Context, token string, pr *PwdLsReq) (opHis *OperationHis,
 		logging.Error("read resp.Body err: %v", err)
 		return nil, err
 	}
-	//fmt.Printf(string(body))
+	logging.Debug("get PwdList response body: %#v", string(body))
 
-	var pwdLsResp PwdLsResp
-	err = json.Unmarshal(body, &pwdLsResp)
+	rlt = &PwdLsResp{}
+	err = json.Unmarshal(body, rlt)
 	if err != nil {
 		logging.Error("unmarshal err: %v", err)
 		return nil, err
 	}
 
-	return &OperationHis{
-		LockNo:     pr.LockNo,
-		CardNo:     "",
-		PwdNo:      pr.PwdNo,
-		Type:       QUERY,
-		Result:     pwdLsResp.RltCode,
-		RltMsg:     pwdLsResp.RltMsg,
-		TimeStamp:  time.Now().UnixNano() / 1e6,
-		ReturnBody: string(body),
-	}, nil
+	return rlt, nil
 }
