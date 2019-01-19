@@ -30,7 +30,7 @@ var (
 	}
 	opHisChan      = make(chan *CheckPwdStatus, 100)
 	sendStatusChan = make(chan *OperationHis, 100)
-	signal = make(chan struct{}, 1)
+	signal         = make(chan struct{}, 1)
 
 	statusMsg = map[string]string{
 		"01": "启用中",
@@ -50,7 +50,7 @@ var (
 
 func main() {
 	app := cli.NewApp()
-	app.Version = "0.0.2"
+	app.Version = "0.0.5"
 
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
@@ -138,6 +138,7 @@ func action(ctx *cli.Context) {
 	var cardList = ReadFile(ctx.String("id-card-file"))
 	var lockList = ReadFile(ctx.String("lock-file"))
 
+	// 此goroutine 用于文件的写入
 	go func() {
 		err = WriteFile(outputFile, opHisChan)
 		if err != nil {
@@ -145,12 +146,13 @@ func action(ctx *cli.Context) {
 		}
 	}()
 
+	// 此goroutine 用于下发或删除等操作的检测, 下发的状态
 	go func() {
-		logging.Debug("get send passwd call pwd/list ")
+		logging.Debug("check the send passwd call pwd/list ")
 		wg := &sync.WaitGroup{}
 		for op := range sendStatusChan {
 			wg.Add(1)
-			go func() {
+			go func(op *OperationHis) {
 				defer wg.Done()
 				body := &PwdLsReq{
 					LockNo: op.LockNo,
@@ -159,9 +161,9 @@ func action(ctx *cli.Context) {
 
 				count := 0
 				for {
-					time.Sleep(5 * time.Second)
-					if count > 60 {
-						logging.Debug("get PwdList func over 300s, not query result, op: %#v", op)
+					time.Sleep(2 * time.Second)
+					if count > 150 {
+						logging.Debug("call PwdList func more then 150 times, spend time 300s, not query result, op: %#v", op)
 						break
 					}
 					ret, err := PwdList(ctx, token, body)
@@ -185,11 +187,10 @@ func action(ctx *cli.Context) {
 						break
 					} else {
 						logging.Error("PwdList response err: %#v", ret)
-
 					}
 					count = count + 1
 				}
-			}()
+			}(op)
 		}
 		wg.Wait()
 	}()
@@ -202,6 +203,8 @@ func action(ctx *cli.Context) {
 		for _, cardNo := range cardList {
 			select {
 			case <-ticker1.C:
+				// 按指定的时间间隔,定时的下发密码
+				// 取得一个身份证cardNo 一次同时发送给所有的门锁
 				for _, lockNo := range lockList {
 					wg.Add(1)
 					logging.Debug("send password timestamp: %v", ts)
@@ -235,25 +238,29 @@ func action(ctx *cli.Context) {
 						}
 						logging.Debug("send passwd operationHis: %#v", op)
 						if ret.RltCode == "HH0000" {
-							// 如果 调用成功, 则发送到 sendStatusChan 等待进行检测是否启用
-							logging.Debug("SEND operation send sednStatusChan check, %#v", op)
+							// 如果调用成功, 则发送到 sendStatusChan 等待进行检测是否启用
+							logging.Debug("SEND operation send sendStatusChan check, %#v", op)
 							sendStatusChan <- op
+
+							logging.Debug("set the sendHis Map: %v", sendHis)
 							sendHis.lock.Lock()
 							{
+								// 由于此处操作的为一个全局的map, 所有goroutine 存在竞争,需要加锁处理
 								sendHis.DelList[op.OpTime] = append(sendHis.DelList[op.OpTime], op)
 							}
 							sendHis.lock.Unlock()
-							logging.Debug("set the sendHis Map: %v", sendHis)
 						} else {
-							// 如果失败这直接写入文件
+							// 如果调用失败这直接写入文件, 记录下发操作
 							opHisChan <- &CheckPwdStatus{
 								OpHis: op,
 							}
 						}
-
 					}(lockNo)
 				}
+				// 等待所有的goroutine 执行完成
 				wg.Wait()
+
+				// 此时可以发送 信号, 进行map 的长度检测, 决定是否执行密码的删除操作
 				logging.Debug("send signal to delete worker")
 				signal <- struct{}{}
 			case <-signal:
@@ -290,23 +297,25 @@ func action(ctx *cli.Context) {
 
 						logging.Debug("PwdDelete response data: %#v", ret)
 						if ret.RltCode == "HH0000" {
-							// 如果 调用成功, 则发送到 sendStatusChan 等待进行检测是否删除
+							// 如果调用成功, 则发送到 sendStatusChan 等待进行检测是否删除
 							logging.Debug("DELETE operation send sendStatusChan check, %#v", op)
-							time.Sleep(time.Second * 5)
 							sendStatusChan <- op
-							delete(sendHis.DelList, int64(keys[0]))
-							logging.Debug("delete after the sendHis: %v", sendHis)
 						} else {
-							// 如果失败这直接写入文件
+							// 如果调用失败这直接写入文件, 记录删除的操作
 							opHisChan <- &CheckPwdStatus{
 								OpHis: op,
 							}
 						}
 					}
+
+					// 循环完 以时间戳为key 的所有的门锁的下发记录slice 调用删除接口后, 删除map 中的key
+					delete(sendHis.DelList, int64(keys[0]))
+					logging.Debug("delete after the sendHis list: %v", sendHis)
 				}
 			}
 
-			ts = ts + int64(ctx.Int("pwd-valid-time"))
+			// 每次下发身份证,时间向前推移, 避免产生同一身份证,密码有效期重叠的问题
+			ts = ts + int64(ctx.Int("pwd-valid-time")/len(cardList))
 		}
 	}
 }

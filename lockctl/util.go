@@ -2,9 +2,14 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/csv"
+	"encoding/json"
+	"github.com/urfave/cli"
 	"io"
+	"io/ioutil"
 	"logging"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -31,6 +36,50 @@ type OperationHis struct {
 	Result  string `json:"result"`
 	RltMsg  string `json:"rlt_msg"`
 	OpTime  int64  `json:"op_time"`
+}
+
+type RequestStatus struct {
+	RltCode string `json:"rlt_code"`
+	RltMsg  string `json:"rlt_msg"`
+}
+
+func Post(ctx *cli.Context, token string, url string, pr interface{}) (body []byte, err error) {
+	logging.Debug("Post Func input parameter(pr): %#v", pr)
+	data, _ := json.Marshal(pr)
+	req, err := http.NewRequest("POST",
+		"http://"+ctx.String("host")+url,
+		bytes.NewReader(data))
+	if err != nil {
+		logging.Error("NewRequest err: %#v", err)
+		return nil, err
+	}
+
+	if url == "/login" {
+		req.Header.Set("version", "1.1")
+		req.Header.Set("Content-Type", "application/json;charset=UTF-8")
+	} else {
+		req.Header.Set("version", "1.1")
+		req.Header.Set("s_id", sid.String())
+		req.Header.Set("access_token", token)
+		req.Header.Set("Content-Type", "application/json;charset=UTF-8")
+	}
+
+
+	resp, err := client.Do(req)
+	if err != nil {
+		logging.Error("client.Do err: %v", err)
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		logging.Error("read resp.Body err: %v", err)
+		return nil, err
+	}
+	logging.Debug("get PwdList response body: %#v", string(body))
+
+	return body, nil
 }
 
 func ReadFile(path string) (result []string) {
@@ -60,9 +109,9 @@ func WriteFile(path string, op chan *CheckPwdStatus) (err error) {
 	_, err = os.Stat(path)
 	notExist := os.IsNotExist(err)
 	if notExist {
-		header = []string{"门锁编号", "身份证号", "加密后身份证号", "操作类型","密码编号",
+		header = []string{"门锁编号", "身份证号", "加密后身份证号", "操作类型", "密码编号",
 			"操作结果", "返回信息", "操作时间戳", "是否检查操作状态", "下发密码状态码", "密码检测信息",
-		"PwdUserName", "mobile", "生效时间", "过期时间"}
+			"PwdUserName", "mobile", "生效时间", "过期时间"}
 	}
 
 	f, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
