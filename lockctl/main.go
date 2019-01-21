@@ -160,10 +160,10 @@ func action(ctx *cli.Context) {
 				}
 
 				count := 0
+				time.Sleep(5 * time.Second)
 				for {
-					time.Sleep(2 * time.Second)
-					if count > 150 {
-						logging.Debug("call PwdList func more then 150 times, spend time 300s, not query result, op: %#v", op)
+					if count > 60 {
+						logging.Debug("call PwdList func more then 60 times, spend time 300s, not query result, op: %#v", op)
 						break
 					}
 					ret, err := PwdList(ctx, token, body)
