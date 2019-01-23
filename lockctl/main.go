@@ -153,9 +153,8 @@ func action(ctx *cli.Context) {
 	}
 
 	if ctx.String("id-card-file") == "" ||
-		ctx.String("lock-file") == "" ||
-		ctx.String("outfile") == "" {
-		logging.Error("id-card-file, lock-file and outfile don't empty")
+		ctx.String("lock-file") == "" {
+		logging.Error("id-card-file, lock-file don't empty")
 		os.Exit(1)
 	}
 
