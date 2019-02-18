@@ -61,7 +61,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "host, H",
-			Value: "bak.ops.huohetech.com",
+			Value: "bak.ops.huooheeeetech.com",
 			Usage: "ops server address",
 		},
 		cli.StringFlag{
